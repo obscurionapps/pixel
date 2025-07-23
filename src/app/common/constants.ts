@@ -3,13 +3,17 @@ export const methodConstant = {
   Registration:'registraton',
   PartMatrixDetail: 'getPartsDetail',
   AddPatrsMatrix : 'addParts',
-  UpdatePatrsMatrix : 'editPartNumber'
+  UpdatePatrsMatrix : 'editPartNumber',
+  PartSpecDetail:'getPartSpec',
+  AddPartSecDetail:'addPartSpec',
+  UpdatePartSecDetail:'updatePartSpec'
 };
 
 export const LocalStorageConstant = {
   AccessToken: 'access-token',
   UserRole: 'user-role',
-  partMatrixDetail: "partMatrixDetails"
+  partMatrixDetail: "partMatrixDetails",
+  partSpecDetail:'partSpecDetail'
 };
 
 export const Roles = {

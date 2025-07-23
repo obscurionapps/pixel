@@ -1,0 +1,5 @@
+::ng-deep .table td, .table th {
+    padding: .40rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}

@@ -41,4 +41,7 @@ export class HeaderComponent implements OnInit {
   openPartsSearch():void{
     this.router.navigate(['matrixsearch']);
   }
+  SpecificationSetup():void{
+    this.router.navigate(['specdetail']);
+  }
 }

@@ -1,0 +1,92 @@
+<app-header></app-header>
+<app-loader [loading]="isLoading"></app-loader>
+
+<div class="container mt-4">
+    <h5 class="mb-3">Add Specification</h5>
+    <app-alerts [errorAlert]="isMainSaveError" [Message]="Message"></app-alerts>
+    <form [formGroup]="specificForm" class="form-signin">
+        <div class="col-12" *ngIf="(specificForm.get('part_number')?.invalid && specificForm.get('part_number')?.touched) ||
+  (specificForm.get('control_plan_no')?.invalid &&  specificForm.get('control_plan_no')?.touched ) || 
+  (specificForm.get('drawing_no')?.invalid && specificForm.get('drawing_no')?.touched)"><span
+                style="color: rgb(221, 7, 7); font-size: small;">* Part No., Plan and Drawing No. is
+                required</span></div>
+        <label for="part_number" class="sr-only">Part Number</label>
+        <input [(ngModel)]="selectedPartSpecific.part_number" [readOnly]="isEnablePartNumber==false || loginRole == 'user'" type="text" formControlName="part_number" autocomplete="off" id="part_number"
+            [ngClass]="{ 'is-invalid': specificForm.get('part_number')?.invalid && specificForm.get('part_number')?.touched }"
+            class="form-control" placeholder="Part Number" [required]="!isEnablePartNumber" />
+
+       
+        <label for="control_plan_no" class="sr-only">Control Plan Number</label>
+        <input type="text" [readOnly]="loginRole == 'user'" [(ngModel)]="selectedPartSpecific.control_plan_no"  formControlName="control_plan_no" autocomplete="off" id="control_plan_no"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': specificForm.get('control_plan_no')?.invalid && specificForm.get('control_plan_no')?.touched }"
+            placeholder="Control Plan Number" required />
+
+        <label for="drawing_no" class="sr-only">Drawing Number</label>
+        <input type="text" [readOnly]="loginRole == 'user'" [(ngModel)]="selectedPartSpecific.drawing_no" formControlName="drawing_no"
+            [ngClass]="{ 'is-invalid': specificForm.get('drawing_no')?.invalid && specificForm.get('drawing_no')?.touched }"
+            autocomplete="off" id="drawing_no" class="form-control" placeholder="Drawing Number" required />
+        <label for="issue" class="sr-only">Issue (if any)</label>
+        <textarea [readOnly]="loginRole == 'user'" formControlName="issue" [(ngModel)]="selectedPartSpecific.issue"
+            [ngClass]="{ 'is-invalid': specificForm.get('issue')?.invalid && specificForm.get('issue')?.touched }"
+            autocomplete="off" id="issue" class="form-control" placeholder="Issue (if any)"></textarea>
+        <label for="remedy" class="sr-only">Remedy (if any)</label>
+        <textarea formControlName="remedy" [readOnly]="loginRole == 'user'" [(ngModel)]="selectedPartSpecific.remedy"
+            [ngClass]="{ 'is-invalid': specificForm.get('remedy')?.invalid && specificForm.get('remedy')?.touched }"
+            autocomplete="off" id="remedy" class="form-control" placeholder="Remedy (if any)"></textarea>
+    </form>
+    <div class="container mt-3" *ngIf="specificationItems.length > 0">
+        <app-alerts [errorAlert]="isError" [Message]="Message"></app-alerts>
+        <h6>Specifications</h6>
+        <div class="list-group mb-1" *ngFor="let spec of specificationItems">
+        <button class="btn btn-link list-group-item list-group-item-action" (click)="openModal(spec)">{{spec.specification}}</button>
+    </div>
+    </div> 
+    <button class="btn btn-outline-success ml-3 mt-2" *ngIf="loginRole == 'admin'" (click)="openModal(null)">+ Specification</button>
+
+    <div class="mt-5">
+        <button class="btn btn-primary ml-2 w25" (click)="savePartSpecificationDetail('1')">Save</button>
+        <button class="btn btn-danger ml-2 w25" *ngIf="loginRole == 'admin'" (click)="savePartSpecificationDetail('0')">Delete</button>
+        <button class="btn btn-secondary ml-2 w25" (click)="cancelToList()">Cancel</button>
+    </div>
+</div>
+<div class="modal fade" id="specModal" tabindex="-1" aria-labelledby="specModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"  id="specModalLabel">Add Specification</h5>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="specSubForm" class="form-signin">
+                    <div class="col-12"
+                        *ngIf="(specSubForm.get('specification')?.invalid && specSubForm.get('specification')?.touched)">
+                        <span style="color: rgb(221, 7, 7); font-size: small;">* Specification is
+                            required</span>
+                    </div>
+                    <label for="specification" class="sr-only">Specification</label>
+                    <input type="text" [readOnly]="btnLabel === 'Update' || loginRole == 'user'" [(ngModel)]="selectedSpec.specification" formControlName="specification" autocomplete="off" id="specification"
+                        [ngClass]="{ 'is-invalid': specSubForm.get('specification')?.invalid && specSubForm.get('specification')?.touched }"
+                        class="form-control" placeholder="Specification" required autofocus />
+
+                    <label for="actual_value" class="sr-only">Actual Value</label>
+                    <input type="text" [(ngModel)]="selectedSpec.actualValue" [readOnly]="loginRole == 'user'" formControlName="actual_value" autocomplete="off" id="actual_value"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': specSubForm.get('actual_value')?.invalid && specSubForm.get('actual_value')?.touched }"
+                        placeholder="Actual value" autofocus />
+
+                    <label for="output_value" class="sr-only">Output Value</label>
+                    <input type="text" [(ngModel)]="selectedSpec.outputValue" formControlName="output_value" autocomplete="off" id="output_value"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': specSubForm.get('output_value')?.invalid && specSubForm.get('output_value')?.touched }"
+                        placeholder="Output value" autofocus />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="addSpecification()" data-dismiss="modal">{{btnLabel}}</button>
+                <button type="button" class="btn btn-danger" *ngIf="btnLabel === 'Update' && loginRole=='admin'"
+                    data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

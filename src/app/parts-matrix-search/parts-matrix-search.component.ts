@@ -9,6 +9,7 @@ import { ScriptService } from '../service/appscript.service';
 import { LocalStorageConstant, methodConstant } from '../common/constants';
 import { LoaderComponent } from '../loader/loader.component';
 import { AlertsComponent } from '../alerts/alerts.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-parts-matrix-search',
   standalone: true,
@@ -26,15 +27,16 @@ export class PartsMatrixSearchComponent implements OnInit {
   column_Number: string = "";
   isFound = false;
   foundMessage = "";
-  constructor(private commonUtilities: CommonUtilities, private appService: ScriptService) { }
+  constructor(private commonUtilities: CommonUtilities, private appService: ScriptService, private router: Router) { }
   partsMatrixData: PartsMatrix[] = [];
   ngOnInit(): void {
+    if (!this.commonUtilities.isAccessEnabled())
+      this.router.navigate(['login']);
     this.getPartMatrixData();
   }
   getPartMatrixData(): void {
     this.partsMatrixData = this.commonUtilities.getPartsMatrixDetailFromLocalStorage();
     if (this.partsMatrixData != null && this.partsMatrixData != undefined && this.partsMatrixData.length > 0) {
-
     }
     else {
       this.isLoading = true;
@@ -89,5 +91,9 @@ export class PartsMatrixSearchComponent implements OnInit {
       this.column_Number = "";
       this.isFound = false;
     }
+  }
+  Refresh(): void {
+    localStorage.removeItem(LocalStorageConstant.partMatrixDetail);
+    this.getPartMatrixData();
   }
 }

@@ -11,15 +11,18 @@ import { ScriptService } from '../service/appscript.service';
 import { PartsMatrix } from '../models/partsMatrix';
 import { HeaderComponent } from '../header/header.component';
 import { FormsModule } from '@angular/forms';
+import { CommonUtilities } from '../common/CommonUtilities';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-part-matrix',
   standalone: true,
+  providers:[CommonUtilities],
   imports: [ReactiveFormsModule, FormsModule, HeaderComponent, CommonModule, NgxPaginationModule, LoaderComponent, AlertsComponent, AppComponent],
   templateUrl: './part-matrix.component.html',
   styleUrl: './part-matrix.component.css'
 })
 export class PartMatrixComponent implements OnInit {
-  constructor(private appService: ScriptService) { }
+  constructor(private appService: ScriptService, private commonUtilities:CommonUtilities, private router:Router) { }
   p: number = 1;
   partMatrixDetail: PartsMatrix[] = [];
   isLoading = false;
@@ -36,7 +39,10 @@ export class PartMatrixComponent implements OnInit {
   Message = "";
   part_number_search: string = '';
   isEmptyGrid = false;
-  ngOnInit(): void {
+  ngOnInit(): void {    
+    var has_Access = this.commonUtilities.isAccessEnabled();    
+    if(!has_Access)
+      this.router.navigate(['login']);
     this.getPartDetails();
     this.partsMatrixForm = new FormGroup({
       part_number: new FormControl('', [Validators.required]),
@@ -215,7 +221,7 @@ export class PartMatrixComponent implements OnInit {
   filteredParts(): PartsMatrix[] {
     if (this.part_number_search !== '') {
       return this.partMatrixDetail.filter(part =>
-        String(part.part_number).includes(this.part_number_search)
+        String(part.part_number).toLowerCase().includes(this.part_number_search.toLowerCase())
       );
     }
     else {

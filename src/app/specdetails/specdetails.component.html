@@ -1,0 +1,35 @@
+<app-header></app-header>
+<app-loader [loading]="isLoading"></app-loader>
+<div class="container mt-4">
+    <div>
+        <h5 class="mb-3">Parts Specification Details</h5>
+        <button type="button" *ngIf="loginRole == 'admin'" class="btn btn-primary btn-sm mb-2" (click)="openAddWindow(null)">Add new</button>
+        <button type="button" class="btn btn-danger ml-2 btn-sm mb-2" (click)="Refresh()">Refresh</button>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th style="width: 250px;">Part no.</th>
+                    <th>Plan no.</th>
+                    <th>Drawing no.</th>
+                </tr>
+                <tr>
+                    <td><input type="text" class="form-control" [(ngModel)]="part_number_search"
+                            placeholder="Search Part Number"></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let part of filteredParts() | paginate: { itemsPerPage: 8, currentPage: p }">
+                    <td><button type="button" (click)="updatePartSpec(part)" class="btn btn-link">{{ part.part_number
+                            }}</button></td>
+                    <td>{{ part.control_plan_no }}</td>
+                    <td>{{ part.drawing_no }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+</div>

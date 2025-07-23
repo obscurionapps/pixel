@@ -2,6 +2,7 @@
 <app-loader [loading]="isLoading"></app-loader>
 <div class="container mt-4">
     <app-alerts [errorAlert]="isError" [Message]="Message"></app-alerts>
+    <button type="button" class="btn btn-danger mb-2 btn-sm" (click)="Refresh()">Refresh</button>
     <ng-select class="mb-3" [items]="partsMatrixData" bindLabel="part_number" bindValue="part_number" placeholder="Select part number"
         [searchable]="true" (change)="partsSearch($event);">
     </ng-select>
