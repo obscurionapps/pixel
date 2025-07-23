@@ -27,9 +27,19 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/app/assets/signin.css",
+              "src/app/assets/offcanvas.css",
+              "src/styles.css",
+              "src/app/assets/bootstrap.min.css",
+              "node_modules/@ng-select/ng-select/themes/default.theme.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/app/assets/jquery-3.2.1.slim.min.js",
+              "src/app/assets/popper.min.js",
+              "src/app/assets/bootstrap.min.js",
+              "src/app/assets/holder.min.js",
+              "src/app/assets/offcanvas.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -92,5 +102,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

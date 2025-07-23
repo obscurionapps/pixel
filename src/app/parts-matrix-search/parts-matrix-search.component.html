@@ -1,0 +1,9 @@
+<app-header></app-header>
+<app-loader [loading]="isLoading"></app-loader>
+<div class="container mt-4">
+    <app-alerts [errorAlert]="isError" [Message]="Message"></app-alerts>
+    <ng-select class="mb-3" [items]="partsMatrixData" bindLabel="part_number" bindValue="part_number" placeholder="Select part number"
+        [searchable]="true" (change)="partsSearch($event);">
+    </ng-select>
+    <app-alerts class="mt-4" [matrixAlert]="isFound" [RowNumber]="row_Number" [ColumnNumber]="column_Number"></app-alerts>
+</div>

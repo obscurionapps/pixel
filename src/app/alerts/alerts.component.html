@@ -1,0 +1,9 @@
+<div class="alert alert-success" role="alert" *ngIf="successAlert">
+  {{Message}}
+</div>
+<div class="alert alert-danger" role="alert" *ngIf="errorAlert">
+  {{Message}}
+</div>
+<div class="alert alert-success" role="alert" *ngIf="matrixAlert">
+  <h6>Row No. <span class="ml-2 badge badge-pill badge-danger mr-5">{{RowNumber}}</span>Column No. <span class="ml-2 badge-pill badge-danger">{{ColumnNumber}}</span></h6>
+</div>

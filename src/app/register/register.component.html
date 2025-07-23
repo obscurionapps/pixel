@@ -1,0 +1,36 @@
+<form [formGroup]="registerForm" class="form-signin">
+  <img class="mb-4" src="https://staph.blob.core.windows.net/images-layout/logo.svg" alt="" width="150">
+
+  <app-alerts [successAlert]="isSuccess" [Message]="Message"></app-alerts>
+  <app-alerts [errorAlert]="isError" [Message]="Message"></app-alerts>
+  <div class="col-12" *ngIf="(registerForm.get('username')?.invalid && registerForm.get('username')?.touched) ||
+  (registerForm.get('firstname')?.invalid &&  registerForm.get('firstname')?.touched ) || 
+  (registerForm.get('password')?.invalid && registerForm.get('password')?.touched)"><span
+      style="color: rgb(221, 7, 7); font-size: small;">* Firstname, Username, Password is required</span></div>
+  <label for="firstname" class="sr-only">First Name</label>
+  <input type="text" formControlName="firstname" autocomplete="off" id="firstname"
+    [ngClass]="{ 'is-invalid': registerForm.get('firstname')?.invalid && registerForm.get('firstname')?.touched }"
+    class="form-control" placeholder="Firstname" required autofocus />
+
+  <label for="lastname" class="sr-only">Last Name</label>
+  <input type="text" formControlName="lastname" autocomplete="off" id="lastname" class="form-control"
+    placeholder="Lastname" autofocus />
+
+  <label for="lastname" class="sr-only">Email</label>
+  <input type="email" formControlName="email" autocomplete="off" id="email" class="form-control" placeholder="Email"
+    autofocus />
+
+  <label for="username" class="sr-only">Username</label>
+  <input type="text"
+    [ngClass]="{ 'is-invalid': registerForm.get('username')?.invalid && registerForm.get('username')?.touched }"
+    formControlName="username" autocomplete="off" id="username" class="form-control" placeholder="Username" autofocus />
+
+  <label for="inputPassword" class="sr-only">Password</label>
+  <input type="password" formControlName="password" id="inputPassword"
+    [ngClass]="{ 'is-invalid': registerForm.get('password')?.invalid && registerForm.get('password')?.touched }"
+    class="form-control" placeholder="Password" required />
+  <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="register()">Register</button>
+  <button class="btn btn-lg btn-secondary btn-block" (click)="login()">Cancel</button>
+  <p class="mt-5 mb-3 text-muted">&copy; 2024-2025</p>
+</form>
+<app-loader [loading]="isLoading"></app-loader>

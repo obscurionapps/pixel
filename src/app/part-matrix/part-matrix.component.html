@@ -1,0 +1,73 @@
+<app-header></app-header>
+<div class="container mt-4">
+    <div>
+        <h5 class="mb-3">Parts Details</h5>
+        <button type="button" class="btn btn-primary btn-sm mb-2" (click)="openModal(null)">Add new</button>
+        <button type="button" class="btn btn-danger ml-2 btn-sm mb-2" (click)="Refresh()">Refresh</button>
+    </div>
+    <app-alerts [errorAlert]="isError" [Message]="Message"></app-alerts>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>Part no.</th>
+                    <th>Row no.</th>
+                    <th>Column no.</th>
+                </tr>
+                <tr>
+                    <td><input type="text" class="form-control mb-2"  [(ngModel)]="part_number_search" placeholder="Search Part Number"></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let part of filteredParts() | paginate: { itemsPerPage: 8, currentPage: p }">
+                    <td><button type="button" (click)="openModal(part)" class="btn btn-link">{{ part.part_number
+                            }}</button></td>
+                    <td>{{ part.row_number }}</td>
+                    <td>{{ part.column_number }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+</div>
+<app-loader [loading]="isLoading"></app-loader>
+<div class="modal fade" id="partsModal" tabindex="-1" aria-labelledby="partsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="partsModalLabel">Add Part Matrix Details</h5>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="partsMatrixForm" class="form-signin">
+                    <div class="col-12" *ngIf="(partsMatrixForm.get('part_number')?.invalid && partsMatrixForm.get('part_number')?.touched) ||
+  (partsMatrixForm.get('row_number')?.invalid &&  partsMatrixForm.get('row_number')?.touched ) || 
+  (partsMatrixForm.get('column_number')?.invalid && partsMatrixForm.get('column_number')?.touched)"><span
+                            style="color: rgb(221, 7, 7); font-size: small;">* Part No., Row No., Column No. is
+                            required</span></div>
+                    <label for="part_number" class="sr-only">Part Number</label>
+                    <input type="text" [(ngModel)]="part_number" formControlName="part_number" autocomplete="off" id="part_number"
+                        [ngClass]="{ 'is-invalid': partsMatrixForm.get('part_number')?.invalid && partsMatrixForm.get('part_number')?.touched }"
+                        class="form-control" placeholder="Part Number" required autofocus />
+
+                    <label for="row_number" class="sr-only">Row number</label>
+                    <input type="number"  [(ngModel)]="row_number" min="0" formControlName="row_number" autocomplete="off" id="row_number" class="form-control"
+                        [ngClass]="{ 'is-invalid': partsMatrixForm.get('row_number')?.invalid && partsMatrixForm.get('row_number')?.touched }" 
+                        placeholder="Row Number" required autofocus />
+
+                    <label for="column_number" class="sr-only">Column Number</label>
+                    <input type="number"  [(ngModel)]="column_number" min="0" formControlName="column_number" 
+                    [ngClass]="{ 'is-invalid': partsMatrixForm.get('column_number')?.invalid && partsMatrixForm.get('column_number')?.touched }" 
+                    autocomplete="off" id="column_number" class="form-control"
+                        placeholder="Column Number" required autofocus />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="saveDetail();resetForm()" data-dismiss="modal">{{btnLabel}}</button>
+                <button type="button" class="btn btn-danger" *ngIf="btnLabel === 'Update'" (click)="Delete()" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-secondary" (click)="resetForm()" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
