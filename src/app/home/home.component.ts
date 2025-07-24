@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
     { title: 'Dashboard', icon: '📦', route: '/home', description: 'Manage all parts', has_access:'all' },
     { title: 'Profile', icon: '👤', route: '/profile', description: 'Your user profile', has_access:'all' },
     { title: 'Part Matrix Search', icon: '⚙️', route: '/matrixsearch', description: 'Find the parts in shelf', has_access:'all' },
+    { title: 'Parts Matrix Setup', icon: '📊', route: '/partmaxtrix', description: 'Configure the matrix', has_access:'admin' },
     { title: 'Parts Detail', icon: '📊', route: '/specdetail', description: 'Parts and Specifications', has_access:'all' },
     { title: 'Setup Parts', icon: '⚙️', route: '/addSpecification', description: 'Configure new parts', has_access:'admin' },
     { title: 'Logout', icon: '🔒', route: '/login', description: 'Sign out securely',  has_access:'all' },
