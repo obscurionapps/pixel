@@ -1,0 +1,10 @@
+::ng-deep .welcome{
+    width: 100%;
+    font-size: large;
+    font-weight: 600;
+}
+::ng-deep
+.card-title
+{
+    overflow-wrap: anywhere;
+}

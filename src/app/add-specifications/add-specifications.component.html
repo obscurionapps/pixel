@@ -75,10 +75,14 @@
                         placeholder="Actual value" autofocus />
 
                     <label for="output_value" class="sr-only">Output Value</label>
-                    <input type="text" [(ngModel)]="selectedSpec.outputValue" formControlName="output_value" autocomplete="off" id="output_value"
+                    <input type="text" [(ngModel)]="selectedSpec.outputValue" (keyup)="checkValueValidity()" formControlName="output_value" autocomplete="off" id="output_value"
                         class="form-control"
                         [ngClass]="{ 'is-invalid': specSubForm.get('output_value')?.invalid && specSubForm.get('output_value')?.touched }"
                         placeholder="Output value" autofocus />
+                        <div class="mt-3">
+                            <app-alerts class="mt-3" [errorAlert]="isValuecheck" [Message]="Message"></app-alerts>
+                            <app-alerts class="mt-3" [successAlert]="isCorrectValue" [Message]="Message"></app-alerts>
+                        </div>
                 </form>
             </div>
             <div class="modal-footer">

@@ -13,7 +13,8 @@ export const LocalStorageConstant = {
   AccessToken: 'access-token',
   UserRole: 'user-role',
   partMatrixDetail: "partMatrixDetails",
-  partSpecDetail:'partSpecDetail'
+  partSpecDetail:'partSpecDetail',
+  LoginName:'loginname'
 };
 
 export const Roles = {

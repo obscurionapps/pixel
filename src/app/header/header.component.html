@@ -7,7 +7,7 @@
       <div class="navbar-collapse offcanvas-collapse" [class.open]="isOffCanvasOpen" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <button class="btn btn-link nav-link">Dashboard <span class="sr-only">(current)</span></button>
+            <button class="btn btn-link nav-link" (click)="homepage()">Dashboard</button>
           </li>
           <li class="nav-item active">
             <button class="btn btn-link nav-link" (click)="openPartsSearch()">Part Matrix Search <span class="sr-only"></span></button>

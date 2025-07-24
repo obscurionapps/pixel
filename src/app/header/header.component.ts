@@ -44,4 +44,7 @@ export class HeaderComponent implements OnInit {
   SpecificationSetup():void{
     this.router.navigate(['specdetail']);
   }
+  homepage():void{
+    this.router.navigate(['home']);
+  }
 }

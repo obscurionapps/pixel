@@ -59,6 +59,8 @@ export class AddSpecificationsComponent implements OnInit {
   }
   selectedSpecJson: SpecJSON[] = [];
   loginRole = "";
+  isValuecheck = false;
+  isCorrectValue = false;
   ngOnInit(): void {
     if (!this.commonUtilities.isAccessEnabled())
       this.router.navigate(['login']);
@@ -303,5 +305,28 @@ export class AddSpecificationsComponent implements OnInit {
   }
   cancelToList(): void {
     this.router.navigate(['specdetail']);
+  }
+  checkValueValidity():void{
+    const actual_value = this.specSubForm.get("actual_value")?.value;
+    if(this.specSubForm.get("output_value")?.value == undefined || this.specSubForm.get("output_value")?.value == ""){
+        this.isValuecheck = false;
+        this.Message = "";
+        this.isCorrectValue = false;
+      }
+    else if(actual_value != null && actual_value !== undefined){
+      const number_part =  parseInt(actual_value, 10);
+      if(number_part != parseInt(this.specSubForm.get("output_value")?.value, 10))
+      {
+        this.isCorrectValue = false;
+        this.isValuecheck = true;
+        this.Message = "The Output value is not matching with expected value.";
+      }
+      else{
+        this.isValuecheck = false;
+        this.Message = "";
+        this.isCorrectValue = true;
+        this.Message="The Output value and expected value are matched, you can proceed."
+      }
+    }
   }
 }
