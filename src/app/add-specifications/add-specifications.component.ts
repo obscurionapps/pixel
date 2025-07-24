@@ -127,6 +127,7 @@ export class AddSpecificationsComponent implements OnInit {
         outputValue: spec.outputValue,
         id: spec.id
       }
+      this.checkValueValidity();
     }
     else {
       this.selectedSpec = {
