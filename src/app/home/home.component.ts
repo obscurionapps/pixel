@@ -30,8 +30,9 @@ export class HomeComponent implements OnInit {
     if(!this.commonUtilities.isAccessEnabled())
       this.router.navigate(['login']);
     this.getUsernameAndRole();
+    debugger;
     if(this.userRole === 'user'){
-      this.quickLinks.filter(s=>s.has_access == 'all');
+      this.quickLinks= this.quickLinks.filter(s=>s.has_access == 'all');
     }
   }
   getUsernameAndRole():void{
