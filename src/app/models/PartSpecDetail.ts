@@ -50,3 +50,21 @@ export class specification{
         this.id = '';
     }
 }
+export class partSpecification{
+    specification:string;
+    actualValue:ActualValue[];
+    id:string;
+     constructor(){
+        this.specification = '';
+        this.actualValue = [];
+        this.id = '';
+    }
+}
+export class ActualValue{
+    value:string;
+    isValid:boolean;
+    constructor(value:string, isValid:boolean){
+        this.value = value;
+        this.isValid=isValid;
+    }
+}

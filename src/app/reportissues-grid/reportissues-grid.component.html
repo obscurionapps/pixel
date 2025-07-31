@@ -1,0 +1,101 @@
+<app-header></app-header>
+<app-loader [loading]="isLoading"></app-loader>
+<app-notification [successNotificationEnabled]="enableNotification_success"></app-notification>
+<app-notification [failureNotificationEnabled]="enableNotification_failure"></app-notification>
+<div class="m20">
+    <div class="pad20 d-flex justify-content-between">
+        <button type="button" (click)="refreshIssueGrid()" class="btn btn-outline-primary btn-sm custom-btn">
+            <i class="bi bi-bootstrap-reboot"></i> Refresh
+        </button>
+        <button type="button" *ngIf="userRole == 'admin'" (click)="addNewIssue()" class="btn btn-outline-primary btn-sm custom-btn">
+            <i class="bi bi-plus"></i> Add New
+        </button>
+        <button type="button" (click)="applyFilterOptions()" class="btn btn-outline-primary btn-sm custom-btn">
+            <i class="bi bi-filter"></i> Apply filter
+        </button>
+    </div>
+    <div *ngIf="filter_part_number !== '' || filter_Start_Date !== '' || filter_end_Date !== ''" class="mb-3" style="display: flex;">
+    <span class="filter_span" style="margin-right: 10px;"> <i class="bi bi-filter"></i>  Applied filters </span>
+    <div class="d-flex flex-wrap gap-2">
+    <div class="badge bg-warning p-2 text-dark" *ngIf="filter_part_number !== ''">
+      Part No. : {{ filter_part_number }}
+      <i class="bi bi-x ms-2" role="button" (click)="removeFilter('partnumber')"></i>
+    </div>
+
+    <div class="badge bg-warning p-2 text-dark" *ngIf="filter_Start_Date !== ''">
+      Date: {{ filter_Start_Date }}
+      <i class="bi bi-x ms-2" role="button"  (click)="removeFilter('date')"></i>
+    </div>
+
+    <div class="badge bg-warning text-dark p-2" *ngIf="filter_end_Date !== ''">
+      End Date: {{ filter_end_Date }}
+      <i class="bi bi-x ms-2" role="button"></i>
+    </div>
+</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <app-alerts [errorAlert]="filterDateError" [Message]="Message"></app-alerts>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>part no.</th>
+                            <th>Issue date</th>
+                            <th>type</th>
+                            <th class="d-none d-md-table-cell">control plan no.</th>
+                            <th class="d-none d-md-table-cell">drawing no.</th>
+                            <th class="d-none d-md-table-cell">problem</th>
+                            <th class="d-none d-md-table-cell">defect image</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="alert"
+                            *ngFor="let issue of this.reportedIssues | paginate: { itemsPerPage: 10, currentPage: p }">
+                            <td><button type="button" (click) = "editIssue(issue.id)" class="btn btn-link">{{ issue.part_number
+                                    }}</button></td>
+                            <td>{{ issue.date }}</td>
+                            <td class="status"><span
+                                    [ngClass]="issue.issue_type == 'Customer' ? 'danger' : issue.issue_type == 'Improvement' ? 'active' : 'medium'">{{issue.issue_type
+                                    }}</span> </td>
+                            <td class="d-none d-md-table-cell">{{ issue.control_plan_no }}</td>
+                            <td class="d-none d-md-table-cell">{{ issue.drawing_number }}</td>
+                            <td class="d-none d-md-table-cell">{{ issue.problem }}</td>
+                            <td class="d-none d-md-table-cell"><button class="btn btn-link">View</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="paginator">
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="filtermodal" tabindex="-1" aria-labelledby="filtermodalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="filtermodalLabel">Filters</h6>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="filterForm" class="form-signin">
+                    <label for="part_number" class="sr-only">Part Number</label>
+                    <input type="text" formControlName="part_number" autocomplete="off" id="part_number"
+                        class="form-control" placeholder="Part Number" autofocus />
+
+                    <label for="row_number" class="sr-only">Date</label>
+                    <input formControlName="start_date" autocomplete="off" id="start_date" class="form-control"
+                        (dateSelect)="onDateSelected($event,'startdate')" [value]="formattedStartDate"
+                        #s="ngbDatepicker" ngbDatepicker (click)="s.toggle()" placeholder="Date" autofocus />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary custom-btn" data-dismiss="modal"
+                    (click)="applyFilter()">Apply</button>
+                <button type="button" class="btn btn-outline-secondary custom-btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

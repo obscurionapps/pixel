@@ -1,0 +1,263 @@
+<app-header></app-header>
+<app-loader [loading]="isLoading"></app-loader>
+<app-notification [successNotificationEnabled]="enableNotification_success"></app-notification>
+<app-notification [failureNotificationEnabled]="enableNotification_failure"></app-notification>
+<div class="container mt-4">
+    <h6 class="">Log Issue Detail</h6>
+    <form [formGroup]="reportForm" class="form-signin">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="date" class="form-label">Date</label>
+                <input formControlName="date" autocomplete="off" id="date" class="form-control customReadOnly"
+                    (dateSelect)="onDateSelected($event)" [value]="formattedDate" #s="ngbDatepicker" ngbDatepicker
+                    (click)="s.toggle()" placeholder="Date" 
+                    [ngClass]="{ 'is-invalid': reportForm.get('date')?.invalid && reportForm.get('date')?.touched }"
+                    required />
+                <div class="invalid-feedback validation-txt"
+                    *ngIf="reportForm.get('date')?.invalid && reportForm.get('date')?.touched">
+                    Date is required.
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="issue_type" class="form-label">Issue Type</label>
+                <ng-select formControlName="issue_type" class="ng-select" [items]="issueTypes" bindLabel="name"
+                    bindValue="value">
+                </ng-select>
+            </div>
+            <div class="col-md-4">
+                <label for="part_number" class="form-label">Part Number</label>
+                <input type="text" id="part_number" autocomplete="false" class="form-control"
+                    formControlName="part_number"
+                    [ngClass]="{ 'is-invalid': reportForm.get('part_number')?.invalid && reportForm.get('part_number')?.touched }" />
+                <div class="invalid-feedback validation-txt"
+                    *ngIf="reportForm.get('date')?.invalid && reportForm.get('date')?.touched">
+                    Part number is required.
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label for="control_plan_no" class="form-label">Control Plan No</label>
+                <input type="text" id="control_plan_no" class="form-control mb-2"
+                    [ngClass]="{ 'is-invalid': reportForm.get('control_plan_no')?.invalid && reportForm.get('control_plan_no')?.touched }"
+                    formControlName="control_plan_no" />
+                <div class="invalid-feedback validation-txt"
+                    *ngIf="reportForm.get('control_plan_no')?.invalid && reportForm.get('control_plan_no')?.touched">
+                    Control plan number is required.
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="drawing_number" class="form-label">Drawing Number</label>
+                <input type="text" id="drawing_number" class="form-control mb-2" formControlName="drawing_number"
+                    [ngClass]="{ 'is-invalid': reportForm.get('drawing_number')?.invalid && reportForm.get('drawing_number')?.touched }" />
+                <div class="invalid-feedback validation-txt"
+                    *ngIf="reportForm.get('drawing_number')?.invalid && reportForm.get('drawing_number')?.touched">
+                    Drawing number is required.
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <label for="problem" class="form-label">Problem</label>
+            <textarea id="problem" class="form-control mb-2 " rows="3" formControlName="problem"
+                [ngClass]="{ 'is-invalid': reportForm.get('problem')?.invalid && reportForm.get('problem')?.touched }"></textarea>
+            <div class="invalid-feedback validation-txt"
+                *ngIf="reportForm.get('problem')?.invalid && reportForm.get('problem')?.touched">
+                Problem is required.
+            </div>
+        </div>
+        <div class="mt-3" style="text-align: left;" *ngIf="specificationItems.length > 0">
+            <app-alerts [errorAlert]="isSpecError" [Message]="Message"></app-alerts>
+            <label>Specifications</label>
+            <div id="accordion" class="myaccordion w-100 mb-3">
+                <div class="card" *ngFor="let spec of specificationItems; let i = index">
+                    <div class="card-header p-0" id="headingTwo">
+                        <button
+                            class="d-flex px-4 py-3 align-items-center justify-content-between btn btn-link collapsed"
+                            data-toggle="collapse" [attr.data-target]="'#collapse' + i" aria-expanded="false"
+                            aria-controls="collapseTwo">
+                            <div class="heading d-flex align-items-center">
+                                <span class="mb-0 custom-span"
+                                    (click)="$event.stopPropagation(); openModal(spec)">Specification {{i+1}}</span>
+                            </div>
+                            <div class="icon d-flex align-items-center justify-content-center">
+                                <i class="ion-ios-trash" (click)="$event.stopPropagation(); deleteSpec(spec)"
+                                    aria-hidden="true"></i>
+                            </div>
+                        </button>
+                    </div>
+                    <div id="collapse{{i}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body p-4 pt-md-3">
+                            <p><strong><span class="fade-color">Specification: </span> </strong> {{spec.specification}}
+                            </p>
+                            <div *ngFor="let actual of spec.actualValue; let j = index">
+                               <p><strong><span class="fade-color">Actual Value {{j+1}}: </span> </strong> {{actual.value}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="mt-3" style="text-align: left;" *ngIf="actionItems.length > 0">
+            <app-alerts [errorAlert]="isActionError" [Message]="Message"></app-alerts>
+            <label>Actions</label>
+            <div id="accordion_actions" class="myaccordion w-100 mb-3">
+                <div class="card" *ngFor="let action of actionItems;let i = index">
+                    <div class="card-header p-0" id="headingTwo">
+                        <button
+                            class="d-flex px-4 py-3 align-items-center justify-content-between btn btn-link collapsed"
+                            data-toggle="collapse" [attr.data-target]="'#collapse-actions' + i" aria-expanded="false"
+                            aria-controls="collapseTwo">
+                            <div class="heading d-flex align-items-center">
+                                <span class="mb-0 custom-span"
+                                    (click)="$event.stopPropagation(); openActionModal(action)">Action {{i+1}}</span>
+                            </div>
+                            <div class="icon d-flex align-items-center justify-content-center">
+                                <i class="ion-ios-trash" (click)="$event.stopPropagation(); deleteAction(action)"
+                                    aria-hidden="true"></i>
+                            </div>
+                        </button>
+                    </div>
+                    <div id="collapse-actions{{i}}" class="collapse" aria-labelledby="headingTwo"
+                        data-parent="#accordion_actions">
+                        <div class="card-body p-4 pt-md-3">
+                            <p><strong><span class="fade-color">Action: </span> </strong> {{action.action}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div style="display: flex;">
+             <div style="text-align: left;" class="mt-1 mb-3">
+            <button class="btn btn-outline-primary btn-sm" (click)="openModal(null)"> <i class="bi bi-plus"></i> Add
+                Specification</button>
+        </div>
+             <div style="text-align: left;" class="mt-1 mb-3 ml-3">
+            <button class="btn btn-outline-primary btn-sm" (click)="openActionModal(null)"> <i class="bi bi-plus"></i>
+                Add Actions</button>
+        </div>
+        </div>  
+        <div>
+            <label for="imapct" class="form-label">Impact</label>
+            <textarea id="imapct" class="form-control mb-2" rows="3" formControlName="imapct"></textarea>
+        </div>
+
+        <div>
+            <app-alerts [errorAlert]="fileSizeError" [Message]="Message"></app-alerts>
+            <label for="defect_image" class="form-label">Defect Image URL</label>
+
+            <div class="file-upload mt-2 mb-3">
+                <div class="file-select">
+                    <div class="file-select-button" id="fileName">Choose File</div>
+                    <div class="file-select-name" id="noFile">No file chosen...</div>
+                    <input type="file" (change)="onFileSelected($event)"  accept="image/*" name="defect_image" id="defect_image">
+                </div>
+                <div *ngIf="defect_image">
+                    <div class="preview mt-3 text-center">
+                        <img [src]="defect_image" style="cursor: pointer;" alt="Preview" 
+                        (click)="viewImage(defect_image)" width="20%" class="img-fluid rounded preview-img" />
+                    </div>
+                    <button class="btn btn-outline-danger custom-btn mt-2 btn-sm" id="btnremoveImage" (click)="removeImagePreview()">
+                    <i class="bi bi-trash mr-1"></i> Remove
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <label for="remarks" class="form-label">Remarks</label>
+            <textarea id="remarks" class="form-control mb-2" rows="3" formControlName="remarks"></textarea>
+        </div>
+        <div class="mt-4 mb-3">
+<button type="submit" *ngIf="loginRole == 'admin'" (click)="saveReportIssue()" class="btn btn-outline-primary btn-sm custom-btn">
+            <i class="bi bi-save mr-1"></i> {{btnMainSaveText}}
+        </button>
+        <button type="button" (click)="BackToGrid()" class="btn btn-outline-secondary btn-sm custom-btn ml-3">
+            <i class="bi bi-x mr-1"></i> Back to grid
+        </button>
+        </div> 
+    </form>
+</div>
+<div class="overlay" *ngIf="previewFullViewImage" (click)="previewFullViewImage = null">
+    <img [src]="previewFullViewImage" class="fullscreen-img" />
+</div>
+<div class="modal fade" id="specModal" tabindex="-1" aria-labelledby="specModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="specModalLabel">Specification Detail</h6>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="specSubForm" class="form-signin">
+                    <label for="specification" class="sr-only">Specification</label>
+                    <textarea [(ngModel)]="selectedSpec.specification" formControlName="specification" autocomplete="off"
+                        id="specification"
+                        [ngClass]="{ 'is-invalid': specSubForm.get('specification')?.invalid && specSubForm.get('specification')?.touched }"
+                        class="form-control" placeholder="Specification" required></textarea>
+                    <div class="invalid-feedback validation-txt"
+                        *ngIf="specSubForm.get('specification')?.invalid && specSubForm.get('specification')?.touched">
+                        Specification is required.
+                    </div>
+                </form>
+                <div class="form-signin pt-0">
+                    <label for="actual_value" class="sr-only">Actual Value</label>
+                    <div *ngFor="let item of selectedSpec.actualValue; let i = index">
+                        <div class="d-flex align-items-center mb-2">
+                            <!-- Input Field -->
+                            <input type="text" class="form-control me-2" [(ngModel)]="selectedSpec.actualValue[i].value"
+                                [readOnly]="loginRole == 'user'" [ngClass]="{ 'is-invalid': !item.isValid }" autocomplete="off"
+                                placeholder="Actual value" />
+                
+                            <!-- Trash Icon -->
+                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeActualValue(i)"
+                                [disabled]="loginRole == 'user'">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                
+                        <!-- Validation Message -->
+                        <div class="invalid-feedback validation-txt d-block" *ngIf="!item.isValid">
+                            Actual Value is required.
+                        </div>
+                    </div>
+                     <button type="button" (click)="onAddActualValues()" class="mt-3 btn btn-outline-success custom-btn"
+                    ><i class="bi bi-plus"></i>Add actual value</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary custom-btn"
+                    (click)="addSpecificationDetail()"><i class="bi bi-save mr-1"></i>{{btnLabel}}</button>
+                <button type="button" class="btn btn-outline-secondary custom-btn" #closeBtnSpecModal data-dismiss="modal"><i class="bi bi-x mr-1"></i>Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="actionModalLabel">Action Detail</h6>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="actionForm" class="form-signin">
+                    <label for="action" class="sr-only">Action</label>
+                    <textarea [(ngModel)]="selectedAction.action" formControlName="action" autocomplete="off"
+                        id="action"
+                        [ngClass]="{ 'is-invalid': actionForm.get('action')?.invalid && actionForm.get('action')?.touched }"
+                        class="form-control" placeholder="Action" required></textarea>
+                    <div class="invalid-feedback validation-txt"
+                        *ngIf="actionForm.get('action')?.invalid && actionForm.get('action')?.touched">
+                        Action is required.
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary custom-btn" data-dismiss="modal"
+                    (click)="addActions()"><i class="bi bi-save mr-1"></i>{{btnLabel}}</button>
+                <button type="button" class="btn btn-outline-secondary custom-btn" data-dismiss="modal"><i class="bi bi-x mr-1"></i>Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,6 +6,8 @@ import { PartMatrixComponent } from './part-matrix/part-matrix.component';
 import { PartsMatrixSearchComponent } from './parts-matrix-search/parts-matrix-search.component';
 import { SpecdetailsComponent } from './specdetails/specdetails.component';
 import { AddSpecificationsComponent } from './add-specifications/add-specifications.component';
+import { ReportissueComponent } from './reportissue/reportissue.component';
+import { ReportissuesGridComponent } from './reportissues-grid/reportissues-grid.component';
 
 export const routes: Routes = [
     {path:'', redirectTo:'login', pathMatch:'full'},
@@ -15,5 +17,7 @@ export const routes: Routes = [
     {path:'partmaxtrix',component:PartMatrixComponent},
     {path:'matrixsearch',component:PartsMatrixSearchComponent},
     {path:'specdetail',component:SpecdetailsComponent},
-    {path:'addSpecification',component:AddSpecificationsComponent}
+    {path:'addSpecification',component:AddSpecificationsComponent},
+    {path:'reportissue',component:ReportissueComponent},
+    {path:'reportissue_grid', component:ReportissuesGridComponent}
 ];

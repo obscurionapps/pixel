@@ -95,7 +95,6 @@ export class SpecdetailsComponent implements OnInit {
     }
   }
   Refresh(): void {
-    debugger;
     localStorage.removeItem(LocalStorageConstant.partSpecDetail);
     this.getPartSpecDetail();
   }

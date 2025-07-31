@@ -6,7 +6,11 @@ export const methodConstant = {
   UpdatePatrsMatrix : 'editPartNumber',
   PartSpecDetail:'getPartSpec',
   AddPartSecDetail:'addPartSpec',
-  UpdatePartSecDetail:'updatePartSpec'
+  UpdatePartSecDetail:'updatePartSpec',
+  GetReportIssue:'getReportIssue',
+  AddNewIssue: 'addReportIssue',
+  GetImageData:'getImagebyIssue',
+  UpdateReportIssue:'updateReportIssue'
 };
 
 export const LocalStorageConstant = {
@@ -14,10 +18,15 @@ export const LocalStorageConstant = {
   UserRole: 'user-role',
   partMatrixDetail: "partMatrixDetails",
   partSpecDetail:'partSpecDetail',
-  LoginName:'loginname'
+  LoginName:'loginname',
+  reportedIssues:'reportedIssues'
 };
 
 export const Roles = {
   Admin:"admin",
   User : "user"
 };
+
+export const Messages={
+  "DateErrorMessage":"End date should be less than the start date"
+}

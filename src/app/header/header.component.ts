@@ -13,9 +13,9 @@ export class HeaderComponent implements OnInit {
   constructor(private router : Router) { }
   isOffCanvasOpen = false;
   isAdmin = false;
+  loginname="";
   ngOnInit(): void {
     this.getUserRole();
-
   }
   toggleOffCanvas() {
     this.isOffCanvasOpen = !this.isOffCanvasOpen;
@@ -23,6 +23,7 @@ export class HeaderComponent implements OnInit {
   getUserRole():void{
     if(localStorage.getItem(LocalStorageConstant.UserRole)){
       const role = localStorage.getItem(LocalStorageConstant.UserRole);
+      this.loginname = localStorage.getItem(LocalStorageConstant.LoginName) ?? "";
       if(role == Roles.Admin){
         this.isAdmin = true;
       }

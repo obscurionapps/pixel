@@ -17,7 +17,8 @@
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
-              "zone.js"
+              "zone.js",
+              "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -27,18 +28,23 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/app/assets/signin.css",
               "src/app/assets/offcanvas.css",
               "src/styles.css",
               "src/app/assets/bootstrap.min.css",
-              "node_modules/@ng-select/ng-select/themes/default.theme.css"
+              "node_modules/@ng-select/ng-select/themes/default.theme.css",
+              "src/app/assets/grid.css",
+              "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css",
+              "https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons.min.css"
             ],
             "scripts": [
               "src/app/assets/jquery-3.2.1.slim.min.js",
               "src/app/assets/popper.min.js",
               "src/app/assets/bootstrap.min.js",
               "src/app/assets/holder.min.js",
-              "src/app/assets/offcanvas.js"
+              "src/app/assets/offcanvas.js",
+              "src/app/assets/script.js"
             ]
           },
           "configurations": {
@@ -48,7 +54,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "900kB",
-                  "maximumError": "1MB"
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -86,7 +92,8 @@
           "options": {
             "polyfills": [
               "zone.js",
-              "zone.js/testing"
+              "zone.js/testing",
+              "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [

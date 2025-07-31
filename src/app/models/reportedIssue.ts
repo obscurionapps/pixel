@@ -1,0 +1,40 @@
+export class ReportedIssues{
+    id:string;
+    date: string;
+    part_number:string;
+    control_plan_no:string;
+    drawing_number:string;
+    issue_type:string;
+    problem:string;
+    specification:string;
+    actions:string;
+    imapct:string;
+    defect_image:string;
+    remarks:string;
+    is_active:number;
+    is_resolved:string;
+    created_date:string;
+    created_by:string;
+    mod_date:string;
+    mod_by:string;
+    constructor(){
+    this.id='';
+    this.date='';
+    this.part_number='';
+    this.control_plan_no='';
+    this.drawing_number='';
+    this.issue_type='';
+    this.problem='';
+    this.specification='';
+    this.actions='';
+    this.imapct='';
+    this.defect_image='';
+    this.remarks='';
+    this.is_active= 1;
+    this.is_resolved='';
+    this.created_date='';
+    this.created_by='';
+    this.mod_date='';
+    this.mod_by='';
+    }
+}

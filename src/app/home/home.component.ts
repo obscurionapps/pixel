@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
     { title: 'Parts Matrix Setup', icon: '📊', route: '/partmaxtrix', description: 'Configure the matrix', has_access:'admin' },
     { title: 'Parts Detail', icon: '📊', route: '/specdetail', description: 'Parts and Specifications', has_access:'all' },
     { title: 'Setup Parts', icon: '⚙️', route: '/addSpecification', description: 'Configure new parts', has_access:'admin' },
-    { title: 'Logout', icon: '🔒', route: '/login', description: 'Sign out securely',  has_access:'all' },
+    { title: 'Report an Issue', icon: '🔒', route: '/reportissue_grid', description: '',  has_access:'all' },
   ];
   loginname:string = "";
   userRole:string="";
