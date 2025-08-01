@@ -1,5 +1,5 @@
 declare var bootstrap: any;
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
@@ -27,9 +27,13 @@ import { Lightbox } from 'ngx-lightbox';
   templateUrl: './reportissue.component.html',
   styleUrl: './reportissue.component.css'
 })
-export class ReportissueComponent implements OnInit {
+export class ReportissueComponent implements OnInit, AfterViewInit  {
   constructor(private _lightbox: Lightbox, private commonUtilities: CommonUtilities, private appService: ScriptService, private router: Router, private route: ActivatedRoute) { }
   @ViewChild('closeBtnSpecModal') closeModalBtn!: ElementRef;
+  @ViewChild('part_number') partNumberInput!: ElementRef<HTMLInputElement>;
+  ngAfterViewInit(): void {
+    this.partNumberInput.nativeElement.focus();
+  }
   isOverlayOpen = false;
   zoomLevel = 1;
   isLoading = false;
@@ -175,6 +179,7 @@ export class ReportissueComponent implements OnInit {
           actualValue: spec.actualValue,
           id: spec.id
         }
+        this.specSubForm.get("specification")?.setValue(spec.specification);
         this.actual_values_array = spec.actualValue;
       }
       else {
@@ -183,6 +188,7 @@ export class ReportissueComponent implements OnInit {
           actualValue: [], 
           id: ''
         }
+        this.specSubForm.get("specification")?.setValue('');
         this.btnLabel = 'Save';
         this.actual_values_array = [];
       }
@@ -239,7 +245,8 @@ export class ReportissueComponent implements OnInit {
         this.selectedAction = {
           action: action.action,
           id: action.id
-        } 
+        }
+        this.actionForm.get("action")?.setValue(action.action);
       }
       else {
         this.selectedAction = {
@@ -247,6 +254,7 @@ export class ReportissueComponent implements OnInit {
           id: ''
         }
         this.btnActionLabel = 'Save';
+        this.actionForm.get("action")?.setValue('');
       }
       const modalElement = document.getElementById('actionModal');
       if (modalElement) {

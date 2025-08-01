@@ -55,6 +55,9 @@ export class CommonUtilities {
         if (reportedIssues_detail != null && reportedIssues_detail != "" && reportedIssues_detail != undefined) {
             this.reportedIssues = JSON.parse(reportedIssues_detail);
         }
+        else {
+            this.reportedIssues = [];
+        }
         return this.reportedIssues;
     }
     parseDate(str: string): Date {
@@ -70,7 +73,7 @@ export class CommonUtilities {
             date1.getFullYear() === date2.getFullYear()
         );
     }
-    isDateBetween(target: string, start: string, end: string): boolean {        
+    isDateBetween(target: string, start: string, end: string): boolean {
         const targetDate = this.parseDate(target);
         const startDate = this.parseDate(start);
         const endDate = this.parseDate(end);

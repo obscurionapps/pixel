@@ -187,7 +187,7 @@
             <div class="modal-body">
                 <form [formGroup]="specSubForm" class="form-signin">
                     <label for="specification" class="sr-only">Specification</label>
-                    <textarea [(ngModel)]="selectedSpec.specification" formControlName="specification" autocomplete="off"
+                    <textarea formControlName="specification" autocomplete="off"
                         id="specification"
                         [ngClass]="{ 'is-invalid': specSubForm.get('specification')?.invalid && specSubForm.get('specification')?.touched }"
                         class="form-control" placeholder="Specification" required></textarea>
@@ -239,7 +239,7 @@
             <div class="modal-body">
                 <form [formGroup]="actionForm" class="form-signin">
                     <label for="action" class="sr-only">Action</label>
-                    <textarea [(ngModel)]="selectedAction.action" formControlName="action" autocomplete="off"
+                    <textarea formControlName="action" autocomplete="off"
                         id="action"
                         [ngClass]="{ 'is-invalid': actionForm.get('action')?.invalid && actionForm.get('action')?.touched }"
                         class="form-control" placeholder="Action" required></textarea>

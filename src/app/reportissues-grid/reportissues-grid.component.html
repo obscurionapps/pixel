@@ -4,7 +4,7 @@
 <app-notification [failureNotificationEnabled]="enableNotification_failure"></app-notification>
 <div class="m20">
     <div class="pad20 d-flex justify-content-between">
-        <button type="submit" (click)="refreshIssueGrid()" class="btn btn-outline-primary btn-sm custom-btn">
+        <button type="button" (click)="refreshIssueGrid()" class="btn btn-outline-primary btn-sm custom-btn">
             <i class="bi bi-bootstrap-reboot"></i> Refresh
         </button>
         <button type="button" *ngIf="userRole == 'admin'" (click)="addNewIssue()" class="btn btn-outline-primary btn-sm custom-btn">
