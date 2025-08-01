@@ -155,7 +155,7 @@
                 </div>
                 <div *ngIf="defect_image">
                     <div class="preview mt-3 text-center">
-                        <img [src]="defect_image" (click)="openOverlay()" class="clickable-img"/>
+                        <img [src]="defect_image" (click)="openOverlay()" width="20%"  class="img-fluid rounded preview-img"/>
                     </div>
                     <button class="btn btn-outline-danger custom-btn mt-2 btn-sm" id="btnremoveImage" (click)="removeImagePreview()">
                     <i class="bi bi-trash mr-1"></i> Remove
@@ -250,9 +250,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-primary custom-btn" data-dismiss="modal"
+                <button type="submit" class="btn btn-outline-primary custom-btn" data-dismiss="modal"
                     (click)="addActions()"><i class="bi bi-save mr-1"></i>{{btnLabel}}</button>
-                <button type="button" class="btn btn-outline-secondary custom-btn" data-dismiss="modal"><i class="bi bi-x mr-1"></i>Close</button>
+                <button type="submit" class="btn btn-outline-secondary custom-btn" data-dismiss="modal"><i class="bi bi-x mr-1"></i>Close</button>
             </div>
         </div>
     </div>
@@ -264,7 +264,7 @@
          [style.transform]="'scale(' + zoomLevel + ')'"
          class="custom-image" />
 
-    <div class="zoom-toolbar">
+    <!-- <div class="zoom-toolbar">
       <button (click)="zoomIn()" aria-label="Zoom In">
         <i class="fa fa-search-plus"></i>
       </button>
@@ -274,6 +274,6 @@
       <button (click)="closeOverlay()" aria-label="Close">
         <i class="fa fa-times"></i>
       </button>
-    </div>
+    </div> -->
   </div>
 </div>
