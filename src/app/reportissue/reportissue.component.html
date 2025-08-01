@@ -79,10 +79,10 @@
                             aria-controls="collapseTwo">
                             <div class="heading d-flex align-items-center">
                                 <span class="mb-0 custom-span"
-                                    (click)="$event.stopPropagation(); openModal(spec)">Specification {{i+1}}</span>
+                                    (click)="openModal(spec)">Specification {{i+1}}</span>
                             </div>
                             <div class="icon d-flex align-items-center justify-content-center">
-                                <i class="ion-ios-trash" (click)="$event.stopPropagation(); deleteSpec(spec)"
+                                <i class="ion-ios-trash" (click)="deleteSpec(spec)"
                                     aria-hidden="true"></i>
                             </div>
                         </button>
@@ -111,10 +111,10 @@
                             aria-controls="collapseTwo">
                             <div class="heading d-flex align-items-center">
                                 <span class="mb-0 custom-span"
-                                    (click)="$event.stopPropagation(); openActionModal(action)">Action {{i+1}}</span>
+                                    (click)="openActionModal(action)">Action {{i+1}}</span>
                             </div>
                             <div class="icon d-flex align-items-center justify-content-center">
-                                <i class="ion-ios-trash" (click)="$event.stopPropagation(); deleteAction(action)"
+                                <i class="ion-ios-trash" (click)="deleteAction(action)"
                                     aria-hidden="true"></i>
                             </div>
                         </button>
