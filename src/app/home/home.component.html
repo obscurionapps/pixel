@@ -1,22 +1,159 @@
 <app-header></app-header>
-<div class="container mt-4">
-    <div class="text-center">
-        <label class="welcome text-center">Hi, {{loginname}}</label>
-        <img class="mb-3" src="https://staph.blob.core.windows.net/images-layout/logo.svg" alt="" width="60">
-    </div>
-    <div class="row">
-        <div class="col-6" style="margin-bottom: 5px;" *ngFor="let link of quickLinks">
-            <div class="card h-100 text-center shadow">
-                <div class="card-body d-flex flex-column justify-content-between">
-                    <div>
-                        <div class="fs-1 mb-3">{{ link.icon }}</div>
-                        <h5 class="card-title">{{ link.title }}</h5>
-                        <p class="card-text text-muted">{{ link.description }}</p>
-                    </div>
-                    <a *ngIf="link.title=='Dashboard'" [routerLink]="link.route" class="btn btn-success mt-3 w-100">You are here</a>
-                    <a *ngIf="link.title!='Dashboard'" [routerLink]="link.route" class="btn btn-primary mt-3 w-100">Go</a>
-                </div>
-            </div>
+<div class="container my-4">
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-4 mb-4" *ngIf="userRole=='admin'">
+      <div class="plan h-100">
+        <div class="inner d-flex flex-column justify-content-between h-100">
+          <span class="pricing mb-3">
+            <span>
+              <i class="bi bi-bug fs-4 text-primary"></i>
+            </span>
+          </span>
+          <p class="title fw-semibold mb-2">Report an issue</p>
+          <p class="info text-muted mb-3">
+            Administrators may use this option to log or report issues.
+          </p>
+          <ul class="features list-unstyled mb-4">
+            <li class="d-flex align-items-center mb-2">
+              <span class="icon me-2">
+                <svg height="20" width="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"></path>
+                </svg>
+              </span>
+              <span>Report a defect</span>
+            </li>
+            <li class="d-flex align-items-center">
+              <span class="icon me-2">
+                <svg height="20" width="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"></path>
+                </svg>
+              </span>
+              <span>Upload defect image</span>
+            </li>
+          </ul>
+          <div class="action">
+            <a class="button custom-btn color-white" (click)="reportIssue()">Go</a>
+          </div>
         </div>
+      </div>
     </div>
+    <div class="col-12 col-md-6 col-lg-4 mb-4" *ngIf="userRole=='admin'">
+      <div class="plan h-100">
+        <div class="inner d-flex flex-column justify-content-between h-100">
+          <span class="pricing mb-3">
+            <span>
+              <i class="bi bi-book fs-4 text-primary"></i>
+            </span>
+          </span>
+          <p class="title fw-semibold mb-2">Defect Records</p>
+          <p class="info text-muted mb-3">
+            Users may use this option to view all the reported issues.
+          </p>
+          <ul class="features list-unstyled mb-4">
+            <li class="d-flex align-items-center mb-2">
+              <span class="icon me-2">
+                <svg height="20" width="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"></path>
+                </svg>
+              </span>
+              <span>View all problems</span>
+            </li>
+            <li class="d-flex align-items-center">
+              <span class="icon me-2">
+                <svg height="20" width="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"></path>
+                </svg>
+              </span>
+              <span>Filter by Part Number or Date</span>
+            </li>
+          </ul>
+          <div class="action">
+            <a class="button custom-btn color-white" (click)="viewReportIssue()">Go</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4 mb-4" *ngIf="userRole=='admin'">
+      <div class="plan h-100">
+        <div class="inner d-flex flex-column justify-content-between h-100">
+          <span class="pricing mb-3">
+            <span>
+              <i class="bi bi-person fs-4 text-primary"></i>
+            </span>
+          </span>
+          <p class="title fw-semibold mb-2">Account Requests</p>
+          <p class="info text-muted mb-3">
+            Administrators may use this option to view new user account requests.
+          </p>
+          <ul class="features list-unstyled mb-4">
+            <li class="d-flex align-items-center mb-2">
+              <span class="icon me-2">
+                <svg height="20" width="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"></path>
+                </svg>
+              </span>
+              <span>View all the account requests</span>
+            </li>
+            <li class="d-flex align-items-center">
+              <span class="icon me-2">
+                <svg height="20" width="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"></path>
+                </svg>
+              </span>
+              <span>Register new users to the system</span>
+            </li>
+          </ul>
+          <div class="action">
+            <a class="button custom-btn color-white" (click)="accountRequests()">Go</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User -->
+    <div class="col-12 col-md-6 col-lg-4 mb-4" *ngIf="userRole=='user'">
+      <div class="plan h-100">
+        <div class="inner d-flex flex-column justify-content-between h-100">
+          <span class="pricing mb-3">
+            <span>
+              <i class="bi bi-book fs-4 text-primary"></i>
+            </span>
+          </span>
+          <p class="title fw-semibold mb-2">Defect Records</p>
+          <p class="info text-muted mb-3">
+            Users may use this option to view all the reported issues.
+          </p>
+          <ul class="features list-unstyled mb-4">
+            <li class="d-flex align-items-center mb-2">
+              <span class="icon me-2">
+                <svg height="20" width="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"></path>
+                </svg>
+              </span>
+              <span>View all problems</span>
+            </li>
+            <li class="d-flex align-items-center">
+              <span class="icon me-2">
+                <svg height="20" width="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"></path>
+                </svg>
+              </span>
+              <span>Filter by Part Number or Date</span>
+            </li>
+          </ul>
+          <div class="action">
+            <a class="button custom-btn color-white" (click)="viewReportIssue()">Go</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

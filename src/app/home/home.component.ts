@@ -33,12 +33,21 @@ export class HomeComponent implements OnInit {
     if(!this.commonUtilities.isAccessEnabled())
       this.router.navigate(['login']);
     this.getUsernameAndRole();
-    if(this.userRole === 'user'){
-      this.quickLinks= this.quickLinks.filter(s=>s.has_access == 'all');
-    }
   }
   getUsernameAndRole():void{
     this.loginname = localStorage.getItem(LocalStorageConstant.LoginName) ?? "";
     this.userRole = localStorage.getItem(LocalStorageConstant.UserRole)??"";
+  }
+  reportIssue():void{
+    localStorage.removeItem(LocalStorageConstant.reportedIssues);
+    this.router.navigate(['reportissue_grid']);
+  }
+  viewReportIssue():void{
+    localStorage.removeItem(LocalStorageConstant.reportedIssuesUser);
+    this.router.navigate(['viewissue']);  
+  }
+  accountRequests():void{
+    localStorage.removeItem(LocalStorageConstant.AccountRequests);
+    this.router.navigate(['viewrequest']);
   }
 }
