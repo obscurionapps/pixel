@@ -1,3 +1,5 @@
+import { partSpecification } from "./PartSpecDetail";
+
 export class Actions{
     id:string;
     action:string;
@@ -18,5 +20,39 @@ export class defect_image{
         this.image_data = null;
         this.issue_id = '';
         this.action = '';
+    }
+}
+export class CommonPartDetail{
+    part_number:string;
+    control_plan_no:string;
+    drawing_number:string;
+    createdby:string;
+    constructor(){
+        this.part_number ='';
+        this.control_plan_no='';
+        this.drawing_number='';
+        this.createdby='';
+    }
+}
+export class reportView{
+    date:string;
+    problem:string;
+    specification:partSpecification[];
+    actions:Actions[];
+    impact:string;
+    remarks:string;
+    image:string;
+    issue_type:string;
+    disposition:string;
+    constructor(){
+        this.date='';
+        this.problem='';
+        this.specification = [],
+        this.actions=[],
+        this.image='';
+        this.impact='';
+        this.remarks='';
+        this.issue_type='';
+        this.disposition='';
     }
 }

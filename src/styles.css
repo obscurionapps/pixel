@@ -66,10 +66,11 @@
   justify-content: center;
   z-index: 9999;
   animation: fadeIn 0.3s ease;
+  overflow: auto !important;
 }
 .custom-image {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 90%;
+  max-height: 90%;
   display: block;
   margin: auto;
   border-radius: 12px;
@@ -104,4 +105,38 @@
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+.grid-header
+{
+  margin: 10px !important;
+  border-radius: 0px !important
+}
+.font-danger
+{
+  color: #f60000 !important;
+}
+.disply-flex{
+  display: flex !important;
+} 
+.custom-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+ 
+.issue_detail thead th:first-child,
+.issue_detail tbody td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: white;
+  z-index: 2;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Ensure the header is above body cells */
+.issue_detail thead th:first-child {
+  z-index: 3;
+}
+.ma-10
+{
+  margin: 10px !important;
 }

@@ -19,7 +19,8 @@ export const LocalStorageConstant = {
   partMatrixDetail: "partMatrixDetails",
   partSpecDetail:'partSpecDetail',
   LoginName:'loginname',
-  reportedIssues:'reportedIssues'
+  reportedIssues:'reportedIssues',
+  reportedIssuesUser:'reportedIssuesuser'
 };
 
 export const Roles = {

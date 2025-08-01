@@ -6,7 +6,7 @@ import { LocalStorageConstant, methodConstant } from '../common/constants';
     providedIn: 'root'
 })
 export class ScriptService {
-    private scriptUrl = 'https://script.google.com/macros/s/AKfycbwYqKxb_MLDSpj7Ezl440_Oo5qR46RDvv_5a2gcMjiMT9RBcm5WwMTrMnChUmqq_Jah/exec';
+    private scriptUrl = 'https://script.google.com/macros/s/AKfycbzRVRMNhcqJyeskSZSxgwtDS4U8LqARA2FCBapPbLKMMgDZEZvSGhel1nO112eZEaXh/exec';
 
     constructor(private http: HttpClient) { }
     getData() {

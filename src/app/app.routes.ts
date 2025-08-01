@@ -8,7 +8,8 @@ import { SpecdetailsComponent } from './specdetails/specdetails.component';
 import { AddSpecificationsComponent } from './add-specifications/add-specifications.component';
 import { ReportissueComponent } from './reportissue/reportissue.component';
 import { ReportissuesGridComponent } from './reportissues-grid/reportissues-grid.component';
-
+import { ViewissueComponent } from './viewissue/viewissue.component';
+import { ViewIssueDetailsComponent } from './view-issue-details/view-issue-details.component';
 export const routes: Routes = [
     {path:'', redirectTo:'login', pathMatch:'full'},
     {path:'login',component:LoginComponent},
@@ -19,5 +20,7 @@ export const routes: Routes = [
     {path:'specdetail',component:SpecdetailsComponent},
     {path:'addSpecification',component:AddSpecificationsComponent},
     {path:'reportissue',component:ReportissueComponent},
-    {path:'reportissue_grid', component:ReportissuesGridComponent}
+    {path:'reportissue_grid', component:ReportissuesGridComponent},
+    {path:'viewissue', component:ViewissueComponent},
+    {path:'issue_details', component:ViewIssueDetailsComponent}
 ];

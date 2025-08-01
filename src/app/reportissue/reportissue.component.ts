@@ -63,11 +63,11 @@ export class ReportissueComponent implements OnInit, AfterViewInit  {
   isActionError = false;
   btnActionLabel= "Save";
   fileSizeError = false;
-  issueTypes = [{ "name": "NA", "value": "" }, { "value": "customer_reported", "name": "Customer Reported" },
-  { "name": "Improvement", "value": "improvment" }
+  issueTypes = [{ "name": "NA", "value": "" }, { "value": "Customer", "name": "Customer" },
+  { "name": "Improvement", "value": "Improvement" }
   ];
   resolvedItems = [{ "name": "No", "value": "no" }, { "value": "yes", "name": "Yes" }];
-  
+  disposition=[{"name":"Not Acceptable","value":""},{"name":"Acceptable","value":"Acceptable"}]
   previewFullViewImage:string|ArrayBuffer|null = null;
   defect_image:string|ArrayBuffer|null = null;
   btnMainSaveText = "Save";
@@ -88,7 +88,8 @@ export class ReportissueComponent implements OnInit, AfterViewInit  {
       problem: new FormControl('', Validators.required),
       imapct: new FormControl(''),
       remarks: new FormControl(''),
-      is_resolved: new FormControl('')
+      is_resolved: new FormControl(''),
+      disposition: new FormControl('')
     });
      this.specSubForm = new FormGroup({
       specification: new FormControl('', [Validators.required])
@@ -285,6 +286,7 @@ export class ReportissueComponent implements OnInit, AfterViewInit  {
         const imapct = this.reportForm.get("imapct")?.value;
         const remarks = this.reportForm.get("remarks")?.value;
         const is_resolved = this.reportForm.get("is_resolved")?.value;
+        const disposition = this.reportForm.get("disposition")?.value;
         const specification = JSON.stringify(this.specificationItems);
         const actions = JSON.stringify(this.actionItems);
         const methodName = (this.issue_id_QueryString != null && this.issue_id_QueryString != "") ? methodConstant.UpdateReportIssue : methodConstant.AddNewIssue;
@@ -302,7 +304,8 @@ export class ReportissueComponent implements OnInit, AfterViewInit  {
             is_resolved: is_resolved,
             specification: specification,
             actions: actions,
-            filename:this.fileName
+            filename:this.fileName,
+            disposition:disposition
           }).subscribe(result => {
             if (result) {
               const resultData: any = result;

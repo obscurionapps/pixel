@@ -17,6 +17,8 @@ export class ReportedIssues{
     created_by:string;
     mod_date:string;
     mod_by:string;
+    disposition:string;
+
     constructor(){
     this.id='';
     this.date='';
@@ -36,5 +38,6 @@ export class ReportedIssues{
     this.created_by='';
     this.mod_date='';
     this.mod_by='';
+    this.disposition='';
     }
 }

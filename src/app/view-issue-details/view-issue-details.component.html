@@ -1,0 +1,120 @@
+<app-header></app-header>
+<div class="grid-header card shadow-sm border-0 rounded-4 overflow-hidden">
+  <div class="card-body p-4">
+    <h6 class="card-title fw-semibold"> <i class="fa fa-exclamation-triangle font-danger" aria-hidden="true"></i> Issue #{{selectedPartCommonDetail.part_number}}</h6>
+    <p class="card-text text-muted">
+      This document outlines the reported issues associated with part number #{{selectedPartCommonDetail.part_number}}.
+    </p>
+    <p class="card-text mb-0">
+        <span class="text-muted">
+            Part Number: </span> <strong>{{selectedPartCommonDetail.part_number}}</strong>
+    </p>
+      <p class="card-text mb-0">
+        <span class="text-muted">
+            Control Plan Number: </span> <strong>{{selectedPartCommonDetail.control_plan_no}}</strong>
+    </p>
+     <p class="card-text mb-0">
+        <span class="text-muted">
+            Drawing Number: </span> <strong>{{selectedPartCommonDetail.drawing_number}}</strong>
+    </p>
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <button type="button" (click)="goBack()" class="btn btn-outline-primary btn-sm custom-btn">
+            <i class="bi bi-arrow-left mr-1"></i> Go Back
+        </button>
+      <small class="text-muted"><i class="bi bi-person-fill mr-1"></i><i>The issue was reported by </i> {{selectedPartCommonDetail.createdby}}</small>
+    </div>
+  </div>
+</div>
+<div>
+        <div class="ma-10">
+            <div class="table-wrap">
+                <div class="table-responsive custom-scroll">
+                    <table class="table issue_detail">
+                        <thead>
+                            <tr>
+                                <th>Reported Date</th>
+                                <th>type</th>
+                                <th width="300">Problem</th>
+                                <th width="300">Specification</th>
+                                <th width="250">Actions</th>
+                                <th width="250">Product Impact</th>
+                                <th width="250">Remarks</th>
+                                <th width="250">Disposition</th>
+                                <th>Defect Image</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="alert" *ngFor="let issue of this.reportView | paginate: { itemsPerPage: 10, currentPage: p }">
+                                <td>{{ issue.date
+                                    }}</td>
+                                <td class="status"><span
+                                        [ngClass]="issue.issue_type == 'Customer' ? 'danger' : issue.issue_type == 'Improvement' ? 'active' : 'medium'">{{issue.issue_type
+                                        }}</span> </td>
+                                <td><span>{{ issue.problem }}</span></td>
+                                <td>
+                                    <div class="grid-header card shadow-sm border-0 rounded-4 overflow-hidden">
+                                        <div class="card-body p-2" *ngFor="let spec of issue.specification">
+                                            <ul class="list-unstyled">
+                                                <li class="disply-flex"><i class="bi bi-star-fill mr-1"></i>
+                                                    <p class="card-text mb-0">{{spec.specification}}</p>
+                                                </li>
+                                                <ul>
+                                                    <li class="disply-flex" *ngFor="let actual of spec.actualValue; let i = index">
+                                                        <i><span class="text-muted"> {{i+1}}. Actual Value </span></i>
+                                                        <p class="card-text mb-0 ml-1"> {{actual.value}}</p>
+                                                    </li>
+                                                </ul>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="grid-header card shadow-sm border-0 rounded-4 overflow-hidden">
+                                        <div class="card-body p-2" *ngFor="let action of issue.actions">
+                                            <ul class="list-unstyled mb-0">
+                                                <li class="disply-flex"><i class="bi bi-check-lg"><span
+                                                            class="text-muted p-1"></span></i>
+                                                    <p class="card-text mb-0">{{action.action}}</p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ issue.impact }}</td>
+                                <td>{{ issue.remarks }}</td>
+                                <td class="status">
+                                    <span
+                                    [ngClass]="issue.disposition == '' ? 'danger' : 'active'">{{issue.disposition == ''? 'Not Acceptable' : issue.disposition
+                                    }}</span>
+                                </td>
+                                <td><button class="btn btn-link" (click)="openOverlay(issue.image)">Preview</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="paginator">
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Overlay Container -->
+<div class="custom-overlay" *ngIf="isOverlayOpen" (click)="closeOverlay()">
+  <div>
+    <img style="margin-top: 50% !important;" [src]="defect_image"
+         [style.transform]="'scale(' + zoomLevel + ')'"
+         class="custom-image" />
+
+    <div class="zoom-toolbar">
+      <!-- <button (click)="zoomIn()" aria-label="Zoom In">
+        <i class="fa fa-search-plus"></i>
+      </button>
+      <button (click)="zoomOut()" aria-label="Zoom Out">
+        <i class="fa fa-search-minus"></i>
+      </button> -->
+      <button (click)="closeOverlay()" aria-label="Close">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+  </div>
+</div>

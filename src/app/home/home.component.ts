@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
     { title: 'Parts Detail', icon: '📊', route: '/specdetail', description: 'Parts and Specifications', has_access:'all' },
     { title: 'Setup Parts', icon: '⚙️', route: '/addSpecification', description: 'Configure new parts', has_access:'admin' },
     { title: 'Report an Issue', icon: '🔒', route: '/reportissue_grid', description: '',  has_access:'all' },
+    { title: 'Defect Records', icon: '🔒', route: '/viewissue', description: '',  has_access:'all' },
   ];
   loginname:string = "";
   userRole:string="";

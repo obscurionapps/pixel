@@ -10,6 +10,7 @@ export class CommonUtilities {
     partsMatrixData: PartsMatrix[] = [];
     partspecDetail: PartSpecDetail[] = [];
     reportedIssues: ReportedIssues[] = [];
+    reportedIssues_user: ReportedIssues[] = [];
     getPartsMatrixDetailFromLocalStorage(): PartsMatrix[] {
         if (localStorage.getItem(LocalStorageConstant.partMatrixDetail) && localStorage.getItem(LocalStorageConstant.partMatrixDetail) != undefined) {
             if (localStorage.getItem(LocalStorageConstant.partMatrixDetail) != null) {
@@ -60,6 +61,16 @@ export class CommonUtilities {
         }
         return this.reportedIssues;
     }
+    getReportedIssuesFromLocalStorageForUser(): ReportedIssues[] {
+        const reportedIssues_detail = localStorage.getItem(LocalStorageConstant.reportedIssuesUser);
+        if (reportedIssues_detail != null && reportedIssues_detail != "" && reportedIssues_detail != undefined) {
+            this.reportedIssues_user = JSON.parse(reportedIssues_detail);
+        }
+        else {
+            this.reportedIssues_user = [];
+        }
+        return this.reportedIssues_user;
+    }
     parseDate(str: string): Date {
         const [day, month, year] = str.split('/').map(Number);
         return new Date(year, month - 1, day); // Month is 0-indexed
@@ -90,5 +101,16 @@ export class CommonUtilities {
     convertToDDMMYYYY(dateStr: string): string {
         const [month, day, year] = dateStr.split('/');
         return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
+    }
+    removeDuplicatesByKey<T>(array: T[], key: keyof T): T[] {
+        const seen = new Set();
+        return array.filter(item => {
+            const val = item[key];
+            if (seen.has(val)) {
+                return false;
+            }
+            seen.add(val);
+            return true;
+        });
     }
 }

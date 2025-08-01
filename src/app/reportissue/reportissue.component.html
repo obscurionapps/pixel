@@ -139,7 +139,7 @@
         </div>
         </div>  
         <div>
-            <label for="imapct" class="form-label">Impact</label>
+            <label for="imapct" class="form-label">Product Impact</label>
             <textarea id="imapct" class="form-control mb-2" rows="3" formControlName="imapct"></textarea>
         </div>
 
@@ -167,6 +167,12 @@
         <div>
             <label for="remarks" class="form-label">Remarks</label>
             <textarea id="remarks" class="form-control mb-2" rows="3" formControlName="remarks"></textarea>
+        </div>
+        <div>
+            <label for="disposition" class="form-label">Disposition</label>
+              <ng-select formControlName="disposition" class="ng-select" [items]="disposition" bindLabel="name"
+                    bindValue="value">
+                </ng-select>
         </div>
         <div class="mt-4 mb-3">
 <button type="submit" *ngIf="loginRole == 'admin'" (click)="saveReportIssue()" class="btn btn-outline-primary btn-sm custom-btn">

@@ -1,0 +1,4 @@
+::ng-deep table td {
+  word-break: break-word;
+  white-space: normal;
+}
