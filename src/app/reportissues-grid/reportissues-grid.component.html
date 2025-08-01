@@ -86,7 +86,7 @@
                         class="form-control" placeholder="Part Number" autofocus />
 
                     <label for="row_number" class="sr-only">Date</label>
-                    <input formControlName="start_date" autocomplete="off" id="start_date" class="form-control"
+                    <input autocomplete="off" id="start_date" class="form-control"
                         (dateSelect)="onDateSelected($event,'startdate')" [value]="formattedStartDate"
                         #s="ngbDatepicker" ngbDatepicker (click)="s.toggle()" placeholder="Date" autofocus />
                 </form>

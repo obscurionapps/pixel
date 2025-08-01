@@ -107,6 +107,7 @@ export class ReportissueComponent implements OnInit {
 
   loadIssueDetail():void
   {
+    this.isLoading=true;
     const issueDeatiledData : ReportedIssues[] = JSON.parse(localStorage.getItem(LocalStorageConstant.reportedIssues) ?? "").filter(
       (s:ReportedIssues)=>s.id == this.issue_id_QueryString
     );
@@ -128,7 +129,8 @@ export class ReportissueComponent implements OnInit {
     }
     setTimeout(() => {
       this.onDateSelected( this.reportForm.get('date')?.value);
-    }, 1);
+       this.isLoading=false;
+    }, 3000);
   }
     addSpecificationDetail(): void {
     var spec = new partSpecification();

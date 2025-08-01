@@ -157,7 +157,6 @@ export class ReportissuesGridComponent implements OnInit {
     if(item == "date"){
       this.filter_Start_Date = "";
       this.formattedStartDate = "";
-      this.filterForm.get("start_date")?.reset();
     }
     this.applyFilter();
   }

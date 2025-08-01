@@ -27,7 +27,7 @@
             <div class="col-md-4">
                 <label for="part_number" class="form-label">Part Number</label>
                 <input type="text" id="part_number" autocomplete="false" class="form-control"
-                    formControlName="part_number"
+                    formControlName="part_number" autofocus
                     [ngClass]="{ 'is-invalid': reportForm.get('part_number')?.invalid && reportForm.get('part_number')?.touched }" />
                 <div class="invalid-feedback validation-txt"
                     *ngIf="reportForm.get('date')?.invalid && reportForm.get('date')?.touched">
