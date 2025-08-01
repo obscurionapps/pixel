@@ -3,6 +3,7 @@
 
   <app-alerts [successAlert]="isSuccess" [Message]="Message"></app-alerts>
   <app-alerts [errorAlert]="isError" [Message]="Message"></app-alerts>
+  
   <div class="col-12" *ngIf="(registerForm.get('username')?.invalid && registerForm.get('username')?.touched) ||
   (registerForm.get('firstname')?.invalid &&  registerForm.get('firstname')?.touched ) || 
   (registerForm.get('password')?.invalid && registerForm.get('password')?.touched)"><span

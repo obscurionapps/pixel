@@ -1,0 +1,91 @@
+<app-header></app-header>
+<app-loader [loading]="isLoading"></app-loader>
+<div class="m20">
+     <app-alerts [successAlert]="isSuccess" [Message]="Message"></app-alerts>
+     <app-alerts [errorAlert]="isError" [Message]="Message"></app-alerts>
+    <div class="pad20 d-flex justify-content-between">
+        <button type="button" (click)="refresh()" class="btn btn-outline-primary btn-sm custom-btn">
+            <i class="bi bi-bootstrap-reboot"></i> Refresh
+        </button>
+    </div>
+    <div>
+        <div class="ma-10">
+            <div class="table-wrap">
+                <div class="table-responsive custom-scroll">
+                    <table class="table issue_detail">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>First name</th>
+                                <th>Lastname</th>
+                                <th width="300">email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="alert"
+                                *ngFor="let req of this.accountRequests | paginate: { itemsPerPage: 10, currentPage: p }">
+                                <td><button class="btn btn-link" (click)="addUser(req)"> <i
+                                            class="bi bi-person-fill mr-1"></i> Add User</button></td>
+                                <td>{{ req.firstname
+                                    }}</td>
+                                <td>{{ req.lastname
+                                    }}</td>
+                                <td>{{ req.email
+                                    }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="paginator">
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="useraddmodal" tabindex="-1" aria-labelledby="useraddModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="useraddModalLabel">Add User</h5>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="registerForm" class="form-signin">  
+                    <div class="col-12" *ngIf="(registerForm.get('username')?.invalid && registerForm.get('username')?.touched) ||
+  (registerForm.get('firstname')?.invalid &&  registerForm.get('firstname')?.touched ) || 
+  (registerForm.get('password')?.invalid && registerForm.get('password')?.touched)"><span
+                            style="color: rgb(221, 7, 7); font-size: small;">* Firstname, Username, Password is
+                            required</span></div>
+                    <label for="firstname" class="sr-only">First Name</label>
+                    <input type="text" formControlName="firstname" autocomplete="off" id="firstname"
+                        [ngClass]="{ 'is-invalid': registerForm.get('firstname')?.invalid && registerForm.get('firstname')?.touched }"
+                        class="form-control" placeholder="Firstname" required autofocus />
+
+                    <label for="lastname" class="sr-only">Last Name</label>
+                    <input type="text" formControlName="lastname" autocomplete="off" id="lastname" class="form-control"
+                        placeholder="Lastname" autofocus />
+
+                    <label for="lastname" class="sr-only">Email</label>
+                    <input type="email" formControlName="email" autocomplete="off" id="email" class="form-control"
+                        placeholder="Email" autofocus />
+
+                    <label for="username" class="sr-only">Username</label>
+                    <input type="text"
+                        [ngClass]="{ 'is-invalid': registerForm.get('username')?.invalid && registerForm.get('username')?.touched }"
+                        formControlName="username" autocomplete="off" id="username" class="form-control"
+                        placeholder="Username" autofocus />
+
+                    <label for="inputPassword" class="sr-only">Password</label>
+                    <input type="password" formControlName="password" id="inputPassword"
+                        [ngClass]="{ 'is-invalid': registerForm.get('password')?.invalid && registerForm.get('password')?.touched }"
+                        class="form-control" placeholder="Password" required /> 
+                </form>
+            </div>
+            <div class="modal-footer">
+               <button class="btn btn-sm custom-btn btn-outline-primary btn-block" type="submit"
+                        (click)="register()" data-dismiss="modal">Register</button>
+                    <button id="closeRequest" class="btn btn-sm custom-btn btn-outline-secondary btn-block" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

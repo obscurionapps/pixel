@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
       });
     }
   }
-  register():void{
-    this.router.navigate(['register']);
+  requestforAccount():void{
+    this.router.navigate(['requestaccount']);
   }
 }

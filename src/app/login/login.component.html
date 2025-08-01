@@ -26,11 +26,11 @@
     placeholder="Password"
     required
   /> 
-  <div class="checkbox mb-3">
-    <button type="button" (click)="register()" class="btn btn-link">Create new user?</button>
+  <div class="mb-3">
+    <i>Don't have an account?</i>
+    <button type="button" (click)="requestforAccount()" class="btn btn-link custom-btn">Submit a request.</button>
   </div>
   <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="login()">Sign in</button>
-  <p class="mt-5 mb-3 text-muted">&copy; 2024-2025</p>
-  20222
+  <p class="mt-5 mb-3 text-muted">&copy; 2025-2026</p>
 </form>
 <app-loader [loading]="isLoading"></app-loader>

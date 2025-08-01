@@ -10,7 +10,10 @@ export const methodConstant = {
   GetReportIssue:'getReportIssue',
   AddNewIssue: 'addReportIssue',
   GetImageData:'getImagebyIssue',
-  UpdateReportIssue:'updateReportIssue'
+  UpdateReportIssue:'updateReportIssue',
+  AccountRequest:'accountRequest',
+  getAccountRequest:'getAccountRequest',
+  updateAccountRequest:'updateAccountReq'
 };
 
 export const LocalStorageConstant = {
@@ -20,7 +23,8 @@ export const LocalStorageConstant = {
   partSpecDetail:'partSpecDetail',
   LoginName:'loginname',
   reportedIssues:'reportedIssues',
-  reportedIssuesUser:'reportedIssuesuser'
+  reportedIssuesUser:'reportedIssuesuser',
+  AccountRequests:'acc_requests'
 };
 
 export const Roles = {

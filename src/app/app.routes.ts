@@ -10,6 +10,8 @@ import { ReportissueComponent } from './reportissue/reportissue.component';
 import { ReportissuesGridComponent } from './reportissues-grid/reportissues-grid.component';
 import { ViewissueComponent } from './viewissue/viewissue.component';
 import { ViewIssueDetailsComponent } from './view-issue-details/view-issue-details.component';
+import { AccountrequestComponent } from './accountrequest/accountrequest.component';
+import { ViewaccountrequestComponent } from './viewaccountrequest/viewaccountrequest.component';
 export const routes: Routes = [
     {path:'', redirectTo:'login', pathMatch:'full'},
     {path:'login',component:LoginComponent},
@@ -22,5 +24,7 @@ export const routes: Routes = [
     {path:'reportissue',component:ReportissueComponent},
     {path:'reportissue_grid', component:ReportissuesGridComponent},
     {path:'viewissue', component:ViewissueComponent},
-    {path:'issue_details', component:ViewIssueDetailsComponent}
+    {path:'issue_details', component:ViewIssueDetailsComponent},
+    {path:'requestaccount', component:AccountrequestComponent},
+    {path:'viewrequest', component:ViewaccountrequestComponent}
 ];

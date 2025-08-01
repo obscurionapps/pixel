@@ -56,3 +56,17 @@ export class reportView{
         this.disposition='';
     }
 }
+export class AccountRequest{
+    firstname:string;
+    lastname:string;
+    id:string;
+    email:string;
+    is_read:string;
+    constructor(){
+        this.firstname='';
+        this.lastname='';
+        this.email='';
+        this.id='';
+        this.is_read='';
+    }
+}

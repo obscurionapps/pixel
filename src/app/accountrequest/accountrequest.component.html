@@ -1,0 +1,27 @@
+<form [formGroup]="requestForm" class="form-signin">
+  <img class="mb-4" src="https://staph.blob.core.windows.net/images-layout/logo.svg" alt="" width="150">
+
+  <app-alerts [successAlert]="isSuccess" [Message]="Message"></app-alerts>
+  <app-alerts [errorAlert]="isError" [Message]="Message"></app-alerts>
+  <div class="col-12" *ngIf="(requestForm.get('username')?.invalid && requestForm.get('username')?.touched) ||
+  (requestForm.get('firstname')?.invalid &&  requestForm.get('firstname')?.touched ) || 
+  (requestForm.get('password')?.invalid && requestForm.get('password')?.touched)"><span
+      style="color: rgb(221, 7, 7); font-size: small;">* Firstname is required</span></div>
+  <label for="firstname" class="sr-only">First Name</label>
+  <input type="text" formControlName="firstname" autocomplete="off" id="firstname"
+    [ngClass]="{ 'is-invalid': requestForm.get('firstname')?.invalid && requestForm.get('firstname')?.touched }"
+    class="form-control" placeholder="Firstname" required autofocus />
+
+  <label for="lastname" class="sr-only">Last Name</label>
+  <input type="text" formControlName="lastname" autocomplete="off" id="lastname" class="form-control"
+    placeholder="Lastname" autofocus />
+
+  <label for="lastname" class="sr-only">Email</label>
+  <input type="email" formControlName="email" autocomplete="off" id="email" class="form-control" placeholder="Email"
+    autofocus/>
+ 
+  <button class="btn btn-sm custom-btn btn-outline-primary" type="submit" (click)="requestAccount()">Request</button>
+  <button class="btn btn-sm custom-btn btn-outline-secondary" (click)="login()">Cancel</button>
+  <p class="mt-5 mb-3 text-muted">&copy; 2024-2025</p>
+</form>
+<app-loader [loading]="isLoading"></app-loader>

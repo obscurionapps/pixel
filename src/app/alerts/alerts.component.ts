@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-alerts',
@@ -7,7 +7,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './alerts.component.html',
   styleUrl: './alerts.component.css'
 })
-export class AlertsComponent {
+export class AlertsComponent  implements OnInit{
+ngOnInit(): void {
+  setTimeout(() => {
+    this.successAlert = false;
+    this.errorAlert=false;
+  }, 5000);
+}
 @Input() successAlert: boolean = false;
 @Input() errorAlert: boolean = false;
 @Input() matrixAlert: boolean = false;

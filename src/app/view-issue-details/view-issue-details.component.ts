@@ -24,6 +24,7 @@ export class ViewIssueDetailsComponent implements OnInit {
     part_number: '',
     createdby:''
   };
+  isLoading=false;
   isOverlayOpen = false;
   zoomLevel = 1;
   p: number = 1;

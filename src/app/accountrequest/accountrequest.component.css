@@ -10,4 +10,6 @@
 }
 ::ng-deep .custom-btn{
   text-transform: none !important; 
+  margin-top:1rem;
+  margin-right: .5rem;
 }
