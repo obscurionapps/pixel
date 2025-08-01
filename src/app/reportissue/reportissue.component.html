@@ -259,21 +259,21 @@
 </div>
 <!-- Overlay Container -->
 <div class="custom-overlay" *ngIf="isOverlayOpen" (click)="closeOverlay()">
-  <div>
+  <div (click)="$event.stopPropagation()">
     <img [src]="defect_image"
          [style.transform]="'scale(' + zoomLevel + ')'"
          class="custom-image" />
 
-    <!-- <div class="zoom-toolbar">
-      <button (click)="zoomIn()" aria-label="Zoom In">
+    <div class="zoom-toolbar">
+      <!-- <button (click)="zoomIn()" aria-label="Zoom In">
         <i class="fa fa-search-plus"></i>
       </button>
       <button (click)="zoomOut()" aria-label="Zoom Out">
         <i class="fa fa-search-minus"></i>
-      </button>
+      </button> -->
       <button (click)="closeOverlay()" aria-label="Close">
         <i class="fa fa-times"></i>
       </button>
-    </div> -->
+    </div>
   </div>
 </div>

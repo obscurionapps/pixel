@@ -261,6 +261,7 @@ export class ReportissueComponent implements OnInit {
       }
     }
     saveReportIssue():void{
+       this.reportForm.markAllAsTouched(); 
       if (this.reportForm.valid) {
         this.isLoading = true;
         const date = this.formattedDate;
@@ -370,6 +371,7 @@ export class ReportissueComponent implements OnInit {
     }
   }
   BackToGrid():void{
+    this.reportForm.markAllAsTouched(); 
     this.router.navigate(['reportissue_grid']);
   }
   onAddActualValues():void{

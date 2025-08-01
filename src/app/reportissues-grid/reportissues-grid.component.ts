@@ -95,6 +95,7 @@ export class ReportissuesGridComponent implements OnInit {
     }
   }
   refreshIssueGrid(): void {
+    this.filterForm.markAllAsTouched(); 
     localStorage.removeItem(LocalStorageConstant.reportedIssues);
     this.getIssues();
   }
