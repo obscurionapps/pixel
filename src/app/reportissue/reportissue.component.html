@@ -259,7 +259,7 @@
 </div>
 <!-- Overlay Container -->
 <div class="custom-overlay" *ngIf="isOverlayOpen" (click)="closeOverlay()">
-  <div (click)="$event.stopPropagation()">
+  <div>
     <img [src]="defect_image"
          [style.transform]="'scale(' + zoomLevel + ')'"
          class="custom-image" />

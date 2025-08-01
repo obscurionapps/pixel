@@ -66,7 +66,6 @@ export class ReportissuesGridComponent implements OnInit {
     this.getIssues();
   }
   getIssues(): void {
-    debugger;
     this.reportedIssues = this.commonUtilities.getReportedIssuesFromLocalStorage();
     if (this.reportedIssues != null && this.reportedIssues != undefined && this.reportedIssues.length > 0) {
 
@@ -96,7 +95,6 @@ export class ReportissuesGridComponent implements OnInit {
     }
   }
   refreshIssueGrid(): void {
-    debugger;
     this.filterForm.markAllAsTouched(); 
     this.filterForm.updateValueAndValidity();
     localStorage.removeItem(LocalStorageConstant.reportedIssues);

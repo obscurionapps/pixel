@@ -274,7 +274,6 @@ export class ReportissueComponent implements OnInit, AfterViewInit  {
     saveReportIssue():void{
        this.reportForm.markAllAsTouched(); 
        this.reportForm.updateValueAndValidity();
-       alert(this.reportForm.valid);
       if (this.reportForm.valid) {
         this.isLoading = true;
         const date = this.formattedDate;
@@ -385,8 +384,7 @@ export class ReportissueComponent implements OnInit, AfterViewInit  {
   }
   BackToGrid():void{
     this.reportForm.markAllAsTouched(); 
-    this.reportForm.updateValueAndValidity(); 
-    alert(this.reportForm.valid);
+    this.reportForm.updateValueAndValidity();
     this.router.navigate(['reportissue_grid']);
   }
   onAddActualValues():void{
