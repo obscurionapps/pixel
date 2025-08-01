@@ -17,17 +17,21 @@ import { NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Actions } from '../models/Custom';
 import { ReportedIssues } from '../models/reportedIssue';
 import { NotificationComponent } from '../notification/notification.component';
+import { LightboxModule } from 'ngx-lightbox';
+import { Lightbox } from 'ngx-lightbox';
 @Component({
   selector: 'app-reportissue',
   standalone: true,
   providers: [CommonUtilities],
-  imports: [ReactiveFormsModule, NgxPaginationModule, NgSelectModule, AlertsComponent, LoaderComponent, FormsModule, HeaderComponent, CommonModule, NgbModule, NotificationComponent],
+  imports: [LightboxModule, ReactiveFormsModule, NgxPaginationModule, NgSelectModule, AlertsComponent, LoaderComponent, FormsModule, HeaderComponent, CommonModule, NgbModule, NotificationComponent],
   templateUrl: './reportissue.component.html',
   styleUrl: './reportissue.component.css'
 })
 export class ReportissueComponent implements OnInit {
-  constructor(private commonUtilities: CommonUtilities, private appService: ScriptService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private _lightbox: Lightbox, private commonUtilities: CommonUtilities, private appService: ScriptService, private router: Router, private route: ActivatedRoute) { }
   @ViewChild('closeBtnSpecModal') closeModalBtn!: ElementRef;
+  isOverlayOpen = false;
+  zoomLevel = 1;
   isLoading = false;
   isEmptyGrid = false;
   reportForm!: FormGroup;
@@ -69,7 +73,7 @@ export class ReportissueComponent implements OnInit {
   enableNotification_failure=false;
   ngOnInit(): void {
     if (!this.commonUtilities.isAccessEnabled())
-      this.router.navigate(['login']);
+      this.router.navigate(['login']);    
     this.loginRole = this.commonUtilities.getRole();
     this.reportForm = new FormGroup({
       date: new FormControl(null, [Validators.required]),
@@ -120,7 +124,7 @@ export class ReportissueComponent implements OnInit {
       this.reportForm.get("imapct")?.patchValue(issueDeatiledData[0].imapct);
       this.reportForm.get("remarks")?.patchValue(issueDeatiledData[0].remarks);
       this.reportForm.get("is_resolved")?.patchValue(issueDeatiledData[0].is_resolved);
-      this.defect_image = issueDeatiledData[0].defect_image;
+      this.defect_image  = issueDeatiledData[0].defect_image;
     }
     setTimeout(() => {
       this.onDateSelected( this.reportForm.get('date')?.value);
@@ -360,9 +364,9 @@ export class ReportissueComponent implements OnInit {
     }
     return isValidfile;
   }
-  viewImage(result:string | ArrayBuffer | null):void{
+  viewImage(result:string):void{
     if(result != null){
-      this.previewFullViewImage = result;
+      this.previewFullViewImage = result; 
     }
   }
   BackToGrid():void{
@@ -393,6 +397,19 @@ export class ReportissueComponent implements OnInit {
     if(i >= 0){
       this.actual_values_array.splice(i, 1);
     }
+  }
+  openOverlay() {
+    this.isOverlayOpen = true;
+    this.zoomLevel = 1;
+  } 
+  closeOverlay() {
+    this.isOverlayOpen = false;
+  } 
+  zoomIn() {
+    this.zoomLevel += 1;
+  }
+  zoomOut() {
+    if (this.zoomLevel > 1) this.zoomLevel -= 1;
   }
 }
 

@@ -155,8 +155,7 @@
                 </div>
                 <div *ngIf="defect_image">
                     <div class="preview mt-3 text-center">
-                        <img [src]="defect_image" style="cursor: pointer;" alt="Preview" 
-                        (click)="viewImage(defect_image)" width="20%" class="img-fluid rounded preview-img" />
+                        <img [src]="defect_image" (click)="openOverlay()" class="clickable-img"/>
                     </div>
                     <button class="btn btn-outline-danger custom-btn mt-2 btn-sm" id="btnremoveImage" (click)="removeImagePreview()">
                     <i class="bi bi-trash mr-1"></i> Remove
@@ -178,9 +177,6 @@
         </button>
         </div> 
     </form>
-</div>
-<div class="overlay" *ngIf="previewFullViewImage" (click)="previewFullViewImage = null">
-    <img [src]="previewFullViewImage" class="fullscreen-img" />
 </div>
 <div class="modal fade" id="specModal" tabindex="-1" aria-labelledby="specModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -260,4 +256,24 @@
             </div>
         </div>
     </div>
+</div>
+<!-- Overlay Container -->
+<div class="custom-overlay" *ngIf="isOverlayOpen" (click)="closeOverlay()">
+  <div (click)="$event.stopPropagation()">
+    <img [src]="defect_image"
+         [style.transform]="'scale(' + zoomLevel + ')'"
+         class="custom-image" />
+
+    <div class="zoom-toolbar">
+      <button (click)="zoomIn()" aria-label="Zoom In">
+        <i class="fa fa-search-plus"></i>
+      </button>
+      <button (click)="zoomOut()" aria-label="Zoom Out">
+        <i class="fa fa-search-minus"></i>
+      </button>
+      <button (click)="closeOverlay()" aria-label="Close">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+  </div>
 </div>
