@@ -6,11 +6,11 @@ import { LocalStorageConstant, methodConstant } from '../common/constants';
     providedIn: 'root'
 })
 export class ScriptService {
-    private scriptUrl = 'https://script.google.com/macros/s/AKfycbyrGtN6jsK-0mN6HWNxE0S4IUaZt89ggqzBRwI87rlzSyKwQy7TpWkEsPqbEcAwk8h1/exec';
-
+    private scriptUrl_dev = 'https://script.google.com/macros/s/AKfycbyrGtN6jsK-0mN6HWNxE0S4IUaZt89ggqzBRwI87rlzSyKwQy7TpWkEsPqbEcAwk8h1/exec';
+    private scriptUrl_prod = 'https://script.google.com/macros/s/AKfycbxijHTw6442NpPbKOSynSxCkQqLuWzZOyX5tVSCWKVKr1G-l9Yjvl-OuheNzqqp4Nquhw/exec';
     constructor(private http: HttpClient) { }
     getData() {
-        return this.http.get(this.scriptUrl);
+        return this.http.get(this.scriptUrl_prod);
     }
     post(method: string, payload: any) {
         const body = new URLSearchParams();
@@ -19,7 +19,7 @@ export class ScriptService {
         }
         body.set('method', method);
         body.set('payload', JSON.stringify({ payload }));
-        return this.http.post(this.scriptUrl, body.toString(), {
+        return this.http.post(this.scriptUrl_prod, body.toString(), {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
     }
