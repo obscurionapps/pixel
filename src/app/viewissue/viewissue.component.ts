@@ -56,10 +56,20 @@ constructor(private commonUtilities: CommonUtilities, private appService: Script
     });
     this.getIssues();
   }
+  retainFilter():void{
+    const admin_date = localStorage.getItem(LocalStorageConstant.IssueSearch_userdate)??"";
+    const admin_number = localStorage.getItem(LocalStorageConstant.IssueSearch_user_p_no)??"";
+    if((admin_date != null && admin_date != undefined) || (admin_number != null && admin_number != undefined)){
+      this.filter_Start_Date = admin_date ?? "";
+      this.filter_part_number = admin_number ?? "";
+      this.applyFilter();
+    }
+  }
   getIssues(): void {
     this.reportedIssues_full_list = this.commonUtilities.getReportedIssuesFromLocalStorageForUser();
     if (this.reportedIssues_full_list != null && this.reportedIssues_full_list != undefined && this.reportedIssues_full_list.length > 0) {
       this.reportedIssues_user = this.commonUtilities.removeDuplicatesByKey(this.reportedIssues_full_list, "part_number");
+      this.retainFilter();
     }
     else {
       this.isLoading = true;
@@ -77,6 +87,7 @@ constructor(private commonUtilities: CommonUtilities, private appService: Script
             else {
               this.isEmptyGrid = false;
             }
+            this.retainFilter();
             this.isLoading = false;
           }
           else {
@@ -131,12 +142,14 @@ constructor(private commonUtilities: CommonUtilities, private appService: Script
       else {
         this.filterDateError = false;
         this.filter_Start_Date = filter_start_date;
+        localStorage.setItem(LocalStorageConstant.IssueSearch_userdate, this.filter_Start_Date);
       }
     }
     if (filter_part_number != null && filter_part_number != undefined && filter_part_number != "") {
       this.filter_part_number = filter_part_number;
+      localStorage.setItem(LocalStorageConstant.IssueSearch_user_p_no, this.filter_part_number);
     }
-    this.reportedIssues_full_list = JSON.parse(localStorage.getItem(LocalStorageConstant.reportedIssuesUser) ?? "").filter((s:any) => (s.part_number == this.filter_part_number || this.filter_part_number == "" || this.filter_part_number == null) &&
+    this.reportedIssues_full_list = JSON.parse(localStorage.getItem(LocalStorageConstant.reportedIssuesUser) ?? "").filter((s:any) => (s.part_number?.toString().toLowerCase() == this.filter_part_number?.toString().toLowerCase() || this.filter_part_number == "" || this.filter_part_number == null) &&
       (this.commonUtilities.areDatesEqual(s.date, this.filter_Start_Date) || this.filter_Start_Date == "" || this.filter_Start_Date == null) &&
       ((this.commonUtilities.isDateBetween(s.date, this.filter_Start_Date, this.filter_end_Date) ||
         this.filter_end_Date == "")));
@@ -146,10 +159,12 @@ constructor(private commonUtilities: CommonUtilities, private appService: Script
     if(item == "partnumber"){
       this.filter_part_number = "";
       this.filterForm.get("part_number")?.reset();
+      localStorage.removeItem(LocalStorageConstant.IssueSearch_user_p_no);
     }
     if(item == "date"){
       this.filter_Start_Date = "";
       this.formattedStartDate = "";
+      localStorage.removeItem(LocalStorageConstant.IssueSearch_userdate);
     }
     this.applyFilter();
   }

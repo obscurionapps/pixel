@@ -54,7 +54,6 @@ export class ViewaccountrequestComponent implements OnInit {
     this.loadRequests();
   }
   loadRequests(): void {
-    debugger;
     this.accountRequests = this.commonUtilities.getAccountRequests();
     if (this.accountRequests != null && this.accountRequests != undefined && this.accountRequests.length > 0) {
 

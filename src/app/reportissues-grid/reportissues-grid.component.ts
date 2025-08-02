@@ -65,10 +65,19 @@ export class ReportissuesGridComponent implements OnInit {
     });
     this.getIssues();
   }
+  retainFilter():void{
+    const admin_date = localStorage.getItem(LocalStorageConstant.IssueSearch_admin_date)??"";
+    const admin_number = localStorage.getItem(LocalStorageConstant.IssueSearch_admin_partnumber)??"";
+    if((admin_date != null && admin_date != undefined) || (admin_number != null && admin_number != undefined)){
+      this.filter_Start_Date = admin_date ?? "";
+      this.filter_part_number = admin_number ?? "";
+      this.applyFilter();
+    }
+  }
   getIssues(): void {
     this.reportedIssues = this.commonUtilities.getReportedIssuesFromLocalStorage();
     if (this.reportedIssues != null && this.reportedIssues != undefined && this.reportedIssues.length > 0) {
-
+      this.retainFilter();
     }
     else {
       this.isLoading = true;
@@ -86,6 +95,7 @@ export class ReportissuesGridComponent implements OnInit {
               this.isEmptyGrid = false;
             }
             this.isLoading = false;
+            this.retainFilter();
           }
           else {
             this.isLoading = false;
@@ -139,12 +149,14 @@ export class ReportissuesGridComponent implements OnInit {
       else {
         this.filterDateError = false;
         this.filter_Start_Date = filter_start_date;
+        localStorage.setItem(LocalStorageConstant.IssueSearch_admin_date, this.filter_Start_Date);
       }
     }
     if (filter_part_number != null && filter_part_number != undefined && filter_part_number != "") {
       this.filter_part_number = filter_part_number;
+      localStorage.setItem(LocalStorageConstant.IssueSearch_admin_partnumber, this.filter_part_number);
     }
-    this.reportedIssues = JSON.parse(localStorage.getItem(LocalStorageConstant.reportedIssues) ?? "").filter((s:any) => (s.part_number == this.filter_part_number || this.filter_part_number == "" || this.filter_part_number == null) &&
+    this.reportedIssues = JSON.parse(localStorage.getItem(LocalStorageConstant.reportedIssues) ?? "").filter((s:ReportedIssues) => (s.part_number?.toString().toLowerCase() == this.filter_part_number?.toString().toLowerCase() || this.filter_part_number == "" || this.filter_part_number == null) &&
       (this.commonUtilities.areDatesEqual(s.date, this.filter_Start_Date) || this.filter_Start_Date == "" || this.filter_Start_Date == null) &&
       ((this.commonUtilities.isDateBetween(s.date, this.filter_Start_Date, this.filter_end_Date) ||
         this.filter_end_Date == "")));
@@ -154,10 +166,12 @@ export class ReportissuesGridComponent implements OnInit {
     if(item == "partnumber"){
       this.filter_part_number = "";
       this.filterForm.get("part_number")?.reset();
+      localStorage.removeItem(LocalStorageConstant.IssueSearch_admin_partnumber);
     }
     if(item == "date"){
       this.filter_Start_Date = "";
       this.formattedStartDate = "";
+      localStorage.removeItem(LocalStorageConstant.IssueSearch_admin_date);
     }
     this.applyFilter();
   }

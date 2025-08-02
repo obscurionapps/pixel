@@ -12,6 +12,7 @@ import { ViewissueComponent } from './viewissue/viewissue.component';
 import { ViewIssueDetailsComponent } from './view-issue-details/view-issue-details.component';
 import { AccountrequestComponent } from './accountrequest/accountrequest.component';
 import { ViewaccountrequestComponent } from './viewaccountrequest/viewaccountrequest.component';
+import { CreatematrixComponent } from './creatematrix/creatematrix.component';
 export const routes: Routes = [
     {path:'', redirectTo:'login', pathMatch:'full'},
     {path:'login',component:LoginComponent},
@@ -26,5 +27,6 @@ export const routes: Routes = [
     {path:'viewissue', component:ViewissueComponent},
     {path:'issue_details', component:ViewIssueDetailsComponent},
     {path:'requestaccount', component:AccountrequestComponent},
-    {path:'viewrequest', component:ViewaccountrequestComponent}
+    {path:'viewrequest', component:ViewaccountrequestComponent},
+    {path:'manageMatrix', component:CreatematrixComponent}
 ];

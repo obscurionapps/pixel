@@ -50,4 +50,8 @@ export class HomeComponent implements OnInit {
     localStorage.removeItem(LocalStorageConstant.AccountRequests);
     this.router.navigate(['viewrequest']);
   }
+  creatematrix():void{
+    localStorage.removeItem(LocalStorageConstant.MatrixDetails);
+    this.router.navigate(['partmaxtrix']);
+  }
 }

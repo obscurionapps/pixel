@@ -3,7 +3,7 @@ import { PartsMatrix } from '../models/partsMatrix';
 import { Injectable } from '@angular/core';
 import { PartSpecDetail } from '../models/PartSpecDetail';
 import { ReportedIssues } from '../models/reportedIssue';
-import { AccountRequest } from '../models/Custom';
+import { AccountRequest, Matrix } from '../models/Custom';
 export class CommonUtilities {
     @Injectable({
         providedIn: 'root'
@@ -13,6 +13,7 @@ export class CommonUtilities {
     reportedIssues: ReportedIssues[] = [];
     reportedIssues_user: ReportedIssues[] = [];
     accountRequests:AccountRequest[]=[];
+    matrixDetail : Matrix[]=[];
     getPartsMatrixDetailFromLocalStorage(): PartsMatrix[] {
         if (localStorage.getItem(LocalStorageConstant.partMatrixDetail) && localStorage.getItem(LocalStorageConstant.partMatrixDetail) != undefined) {
             if (localStorage.getItem(LocalStorageConstant.partMatrixDetail) != null) {
@@ -125,5 +126,15 @@ export class CommonUtilities {
         this.accountRequests = [];
        }
        return this.accountRequests;
+    }
+    getMatrixDetails():Matrix[]{
+        const matrix = localStorage.getItem(LocalStorageConstant.MatrixDetails);
+        if(matrix != null && matrix != undefined && matrix.length > 0){
+            this.matrixDetail = JSON.parse(matrix);
+        }
+        else{
+            this.matrixDetail = [];
+        }
+        return this.matrixDetail;
     }
 }

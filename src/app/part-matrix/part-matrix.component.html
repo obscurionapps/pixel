@@ -1,72 +1,129 @@
 <app-header></app-header>
-<div class="container mt-4">
-    <div>
-        <h5 class="mb-3">Parts Details</h5>
-        <button type="button" class="btn btn-primary btn-sm mb-2" (click)="openModal(null)">Add new</button>
-        <button type="button" class="btn btn-danger ml-2 btn-sm mb-2" (click)="Refresh()">Refresh</button>
+<app-loader [loading]="isLoading"></app-loader>
+<app-notification [successNotificationEnabled]="enableNotification_success"></app-notification>
+<app-notification [failureNotificationEnabled]="enableNotification_failure"></app-notification>
+<div class="m20">
+    <div class="pad20 d-flex justify-content-between">
+        <button type="button" (click)="Refresh()" class="btn btn-outline-primary btn-sm custom-btn">
+            <i class="bi bi-bootstrap-reboot"></i> Refresh
+        </button>
+        <button type="button" *ngIf="login_role == 'admin'" (click)="addNewMatrix()" class="btn btn-outline-primary btn-sm custom-btn">
+            <i class="bi bi-plus"></i> New Matrix
+        </button>
+        <button type="button" (click)="applyFilterOptions()" class="btn btn-outline-primary btn-sm custom-btn">
+            <i class="bi bi-filter"></i> Apply filter
+        </button>
     </div>
-    <app-alerts [errorAlert]="isError" [Message]="Message"></app-alerts>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead class="thead-light">
-                <tr>
-                    <th>Part no.</th>
-                    <th>Row no.</th>
-                    <th>Column no.</th>
-                </tr>
-                <tr>
-                    <td><input type="text" class="form-control mb-2"  [(ngModel)]="part_number_search" placeholder="Search Part Number"></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let part of filteredParts() | paginate: { itemsPerPage: 8, currentPage: p }">
-                    <td><button type="button" (click)="openModal(part)" class="btn btn-link">{{ part.part_number
-                            }}</button></td>
-                    <td>{{ part.row_number }}</td>
-                    <td>{{ part.column_number }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+     <div *ngIf="filter_part_number !== ''" class="mb-3" style="display: flex;">
+        <span class="filter_span" style="margin-right: 10px;"> <i class="bi bi-filter"></i>  Applied filters </span>
+        <div class="d-flex flex-wrap gap-2">
+             <div class="badge bg-warning p-2 text-dark" *ngIf="filter_part_number !== ''">
+                 Part No. : {{ filter_part_number }}
+                 <i class="bi bi-x ms-2" role="button" (click)="removeFilter('partnumber')"></i>
+             </div>
+        </div>
+     </div>
+</div>
+
+<div class="ma-10">
+    <div class="table-wrap">
+        <div class="table-responsive custom-scroll">
+            <table class="table issue_detail">
+                <thead>
+                    <tr>
+                        <th>Part Number</th>
+                        <th>Plant</th>
+                        <th width="300">Control plan position</th>
+                        <th width="300">Book position</th>
+                        <th width="200">Control Plan Number</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="alert"
+                        *ngFor="let matrix of this.matrixViewDataDetails | paginate: { itemsPerPage: 10, currentPage: p }">
+                        <td><button *ngIf="login_role == 'admin'" type="button" (click)="editMatrix(matrix)" class="btn btn-link"> {{ matrix.part_number
+                            }}</button><span *ngIf="login_role == 'user'">{{ matrix.part_number
+                            }}</span></td>
+                        <td><span>{{ matrix.plant }}</span></td>
+                        <td class="status">
+                            <div class="grid-header card shadow-sm border-0 rounded-4 overflow-hidden">
+                                <div class="card-body p-2">
+                                    <ul class="list-unstyled">
+                                        <li class="disply-flex mb-2"><i class="bi bi-check mr-1 mb-2"></i>
+                                            <p class="card-text mb-0"><i class="fade-color mr-2">Row:</i>
+                                               <strong><span class="active">{{matrix.control_plan_data.row}}</span> </strong></p>
+                                        </li>
+                                        <li class="disply-flex"><i class="bi bi-check mr-1"></i>
+                                            <p class="card-text mb-0"><i
+                                                    class="fade-color mr-2">Column:</i><strong><span class="danger">{{matrix.control_plan_data.column}}</span></strong>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="status">
+                            <div class="grid-header card shadow-sm border-0 rounded-4 overflow-hidden">
+                                <div class="card-body p-2">
+                                    <ul class="list-unstyled">
+                                        <li class="disply-flex mb-2"><i class="bi bi-check mr-1 mb-2"></i>
+                                            <p class="card-text mb-0"><i class="fade-color mr-2">Row:</i>
+                                               <strong><span class="active"> {{matrix.book_data.row}}</span></strong> </p>
+                                        </li>
+                                        <li class="disply-flex"><i class="bi bi-check mr-1"></i>
+                                            <p class="card-text mb-0"><i
+                                                    class="fade-color mr-2">Column:</i><strong><span class="danger">{{matrix.book_data.column}}</span> </strong> </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ matrix.control_plan_number }}</td>
+                        <td><button class="btn btn-link" style="color: red;" (click)="deleteConfirm(matrix)">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="paginator">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
     </div>
 </div>
-<app-loader [loading]="isLoading"></app-loader>
-<div class="modal fade" id="partsModal" tabindex="-1" aria-labelledby="partsModalLabel" aria-hidden="true">
+<div class="modal fade" id="filtermodal" tabindex="-1" aria-labelledby="filtermodalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="partsModalLabel">Add Part Matrix Details</h5>
+                <h6 class="modal-title" id="filtermodalLabel">Filters</h6>
             </div>
             <div class="modal-body">
-                <form [formGroup]="partsMatrixForm" class="form-signin">
-                    <div class="col-12" *ngIf="(partsMatrixForm.get('part_number')?.invalid && partsMatrixForm.get('part_number')?.touched) ||
-  (partsMatrixForm.get('row_number')?.invalid &&  partsMatrixForm.get('row_number')?.touched ) || 
-  (partsMatrixForm.get('column_number')?.invalid && partsMatrixForm.get('column_number')?.touched)"><span
-                            style="color: rgb(221, 7, 7); font-size: small;">* Part No., Row No., Column No. is
-                            required</span></div>
+                <form [formGroup]="filterForm" class="form-signin">
                     <label for="part_number" class="sr-only">Part Number</label>
-                    <input type="text" [(ngModel)]="part_number" formControlName="part_number" autocomplete="off" id="part_number"
-                        [ngClass]="{ 'is-invalid': partsMatrixForm.get('part_number')?.invalid && partsMatrixForm.get('part_number')?.touched }"
-                        class="form-control" placeholder="Part Number" required autofocus />
-
-                    <label for="row_number" class="sr-only">Row number</label>
-                    <input type="number"  [(ngModel)]="row_number" min="0" formControlName="row_number" autocomplete="off" id="row_number" class="form-control"
-                        [ngClass]="{ 'is-invalid': partsMatrixForm.get('row_number')?.invalid && partsMatrixForm.get('row_number')?.touched }" 
-                        placeholder="Row Number" required autofocus />
-
-                    <label for="column_number" class="sr-only">Column Number</label>
-                    <input type="number"  [(ngModel)]="column_number" min="0" formControlName="column_number" 
-                    [ngClass]="{ 'is-invalid': partsMatrixForm.get('column_number')?.invalid && partsMatrixForm.get('column_number')?.touched }" 
-                    autocomplete="off" id="column_number" class="form-control"
-                        placeholder="Column Number" required autofocus />
+                    <input type="text" formControlName="part_number" autocomplete="off" id="part_number"
+                        class="form-control" placeholder="Part Number" autofocus /> 
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="saveDetail();resetForm()" data-dismiss="modal">{{btnLabel}}</button>
-                <button type="button" class="btn btn-danger" *ngIf="btnLabel === 'Update'" (click)="Delete()" data-dismiss="modal">Delete</button>
-                <button type="button" class="btn btn-secondary" (click)="resetForm()" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary custom-btn" data-dismiss="modal"
+                    (click)="applyFilter()">Apply</button>
+                <button type="button" class="btn btn-outline-secondary custom-btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+               <h6 class="modal-title" id="deleteModalLabel"> <i class="fa fa-exclamation-triangle font-danger mr-2"></i>Confirm Deletion</h6>
+            </div>
+            <div class="modal-body">
+                <label>Are you sure you want to permanently delete this item?</label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger custom-btn" data-dismiss="modal"
+                    (click)="delete()">Delete</button>
+                <button type="button" class="btn btn-outline-secondary custom-btn" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

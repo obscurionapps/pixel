@@ -1,0 +1,112 @@
+<app-header></app-header>
+<app-loader [loading]="isLoading"></app-loader>
+<app-notification [successNotificationEnabled]="enableNotification_success"></app-notification>
+<app-notification [failureNotificationEnabled]="enableNotification_failure"></app-notification>
+<div class="container mt-4">
+    <h6 class="">Add new matrix</h6>
+    <form [formGroup]="matrixForm" class="form-signin">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="part_number" class="form-label">Part Number</label>
+                <input type="text" formControlName="part_number" autocomplete="off" id="part_number"
+                    class="form-control"
+                    [ngClass]="{ 'is-invalid': matrixForm.get('part_number')?.invalid && matrixForm.get('part_number')?.touched }"
+                    required />
+                <div class="invalid-feedback validation-txt"
+                    *ngIf="matrixForm.get('part_number')?.invalid && matrixForm.get('part_number')?.touched">
+                    Part number is required.
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="plant" class="form-label">Plant</label>
+                <ng-select formControlName="plant" class="ng-select" [items]="plants" bindLabel="name" bindValue="value"
+                    required
+                    [ngClass]="{ 'is-invalid': matrixForm.get('plant')?.invalid && matrixForm.get('plant')?.touched }">
+                </ng-select>
+                <div class="invalid-feedback validation-txt"
+                    *ngIf="matrixForm.get('plant')?.invalid && matrixForm.get('plant')?.touched">
+                    Plant is required.
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="control_plan_number" class="form-label">Control plan number</label>
+                <input type="text" formControlName="control_plan_number" autocomplete="off" id="control_plan_number"
+                    class="form-control" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-list-task mr-1"></i> Control plan matrix
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+                                <label for="control_plan_row" class="form-label">Row</label>
+                                <input type="text" formControlName="control_plan_row" autocomplete="off"
+                                    id="control_plan_row" class="form-control"
+                                    [ngClass]="{ 'is-invalid': matrixForm.get('control_plan_row')?.invalid && matrixForm.get('control_plan_row')?.touched }" />
+                                <div class="invalid-feedback validation-txt"
+                                    *ngIf="matrixForm.get('control_plan_row')?.invalid && matrixForm.get('control_plan_row')?.touched">
+                                    Row is required.
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12">
+                                <label for="control_plan_column" class="form-label">Column</label>
+                                <input type="text" formControlName="control_plan_column" autocomplete="off"
+                                    id="control_plan_column" class="form-control"
+                                    [ngClass]="{ 'is-invalid': matrixForm.get('control_plan_column')?.invalid && matrixForm.get('control_plan_column')?.touched }" />
+                                <div class="invalid-feedback validation-txt"
+                                    *ngIf="matrixForm.get('control_plan_column')?.invalid && matrixForm.get('control_plan_column')?.touched">
+                                    Column is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-book mr-1"></i> Book matrix
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label for="book_row" class="form-label">Row</label>
+                                <input type="text" formControlName="book_row" autocomplete="off" id="book_row"
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': matrixForm.get('book_row')?.invalid && matrixForm.get('book_row')?.touched }" />
+                                <div class="invalid-feedback validation-txt"
+                                    *ngIf="matrixForm.get('book_row')?.invalid && matrixForm.get('book_row')?.touched">
+                                    Row is required.
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12">
+                                <label for="book_column" class="form-label">Column</label>
+                                <input type="text" formControlName="book_column" autocomplete="off" id="book_column"
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': matrixForm.get('book_column')?.invalid && matrixForm.get('book_column')?.touched }" />
+                                <div class="invalid-feedback validation-txt"
+                                    *ngIf="matrixForm.get('book_column')?.invalid && matrixForm.get('book_column')?.touched">
+                                    Column is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 mb-3">
+            <button type="submit" (click)="saveMatrix()" class="btn btn-outline-primary btn-sm custom-btn">
+                <i class="bi bi-save mr-1"></i> {{btnMainSaveText}}
+            </button>
+            <button type="button" (click)="goback()" class="btn btn-outline-secondary btn-sm custom-btn ml-3">
+                <i class="bi bi-x mr-1"></i> Back to grid
+            </button>
+        </div>
+    </form>
+</div>

@@ -70,3 +70,64 @@ export class AccountRequest{
         this.is_read='';
     }
 }
+export class Matrix{
+    id:string;
+    part_number:string;
+    plant:string;
+    control_plan_number:string;
+    control_plan_data:string;
+    book_data:string;
+    is_active:string;
+    created_date:string;
+    created_by:string;
+    
+    constructor(){
+        this.id='';
+        this.part_number='';
+        this.control_plan_number='';
+        this.plant='';
+        this.control_plan_data='';
+        this.book_data='';
+        this.is_active='';
+        this.created_by='';
+        this.created_date='';
+    }
+}
+export class ControlPlanMatrix{
+    row:string;
+    column:string;
+    constructor(){
+        this.row='';
+        this.column='';
+    }
+}
+export class BookMatrix{
+    row:string;
+    column:string;
+    constructor(){
+        this.row='';
+        this.column='';
+    }
+}
+export class MatrixViewEntity{
+    id:string;
+    part_number:string;
+    plant:string;
+    control_plan_number:string;
+    control_plan_data:ControlPlanMatrix;
+    book_data:BookMatrix;
+    is_active:string;
+    createdby:string;
+    created_date:string;
+    constructor(){
+        this.id='',
+        this.book_data=new BookMatrix(),
+        this.part_number='',
+        this.plant='',
+        this.control_plan_number='',
+        this.control_plan_data=new ControlPlanMatrix(),
+        this.is_active='',
+        this.created_date='',
+        this.createdby=''
+    }
+}

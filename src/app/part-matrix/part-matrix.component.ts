@@ -13,16 +13,18 @@ import { HeaderComponent } from '../header/header.component';
 import { FormsModule } from '@angular/forms';
 import { CommonUtilities } from '../common/CommonUtilities';
 import { Router } from '@angular/router';
+import { Matrix, MatrixViewEntity } from '../models/Custom';
+import { NotificationComponent } from '../notification/notification.component';
 @Component({
   selector: 'app-part-matrix',
   standalone: true,
-  providers:[CommonUtilities],
-  imports: [ReactiveFormsModule, FormsModule, HeaderComponent, CommonModule, NgxPaginationModule, LoaderComponent, AlertsComponent, AppComponent],
+  providers: [CommonUtilities],
+  imports: [NotificationComponent, ReactiveFormsModule, FormsModule, HeaderComponent, CommonModule, NgxPaginationModule, LoaderComponent, AlertsComponent, AppComponent],
   templateUrl: './part-matrix.component.html',
   styleUrl: './part-matrix.component.css'
 })
 export class PartMatrixComponent implements OnInit {
-  constructor(private appService: ScriptService, private commonUtilities:CommonUtilities, private router:Router) { }
+  constructor(private appService: ScriptService, private commonUtilities: CommonUtilities, private router: Router) { }
   p: number = 1;
   partMatrixDetail: PartsMatrix[] = [];
   isLoading = false;
@@ -39,44 +41,96 @@ export class PartMatrixComponent implements OnInit {
   Message = "";
   part_number_search: string = '';
   isEmptyGrid = false;
-  ngOnInit(): void {    
-    var has_Access = this.commonUtilities.isAccessEnabled();    
-    if(!has_Access)
+  matrixDetails: Matrix[] = [];
+  matrixViewDataDetails: MatrixViewEntity[] = [];
+  enableNotification_success = false;
+  enableNotification_failure = false;
+  filter_part_number = "";
+  filterForm!: FormGroup;
+  matrixId = "";
+  login_role = "";
+  ngOnInit(): void {
+    var has_Access = this.commonUtilities.isAccessEnabled();
+    if (!has_Access)
       this.router.navigate(['login']);
-    this.getPartDetails();
-    this.partsMatrixForm = new FormGroup({
-      part_number: new FormControl('', [Validators.required]),
-      row_number: new FormControl('', Validators.required),
-      column_number: new FormControl('', Validators.required)
+    this.login_role = this.commonUtilities.getRole();
+    this.filterForm = new FormGroup({
+      part_number: new FormControl('')
     });
+    if (localStorage.getItem("status") == "1") {
+      this.enableNotification_success = true;
+      this.enableNotification_failure = false;
+    }
+    else if (localStorage.getItem("status") == "0") {
+      this.enableNotification_success = false;
+      this.enableNotification_failure = true;
+    }
+    localStorage.removeItem("status"); 
+    this.getMatrixDetails();
+    if(localStorage.getItem(LocalStorageConstant.MatrixSearch) != null && localStorage.getItem(LocalStorageConstant.MatrixSearch) != undefined && localStorage.getItem(LocalStorageConstant.MatrixSearch) != "")
+    {
+      this.filter_part_number = localStorage.getItem(LocalStorageConstant.MatrixSearch) ?? "";
+      this.applyFilter();
+      this.filterForm.get("part_number")?.patchValue(this.filter_part_number);
+    }
   }
-  getPartDetails(): void {
-    this.isLoading = true;
-    if (localStorage.getItem(LocalStorageConstant.partMatrixDetail) && localStorage.getItem(LocalStorageConstant.partMatrixDetail) != undefined) {
-      if (localStorage.getItem(LocalStorageConstant.partMatrixDetail) != null) {
-        this.partMatrixDetail = JSON.parse(localStorage.getItem(LocalStorageConstant.partMatrixDetail) ?? "");
-      }
-      this.isLoading = false;
+  getMatrixDetails(): void {
+    this.matrixDetails = this.commonUtilities.getMatrixDetails();
+    if (this.matrixDetails != null && this.matrixDetails != undefined && this.matrixDetails.length > 0) {
+      this.matrixViewDataDetails = this.matrixDetails.map((s) => {
+        return {
+          book_data: JSON.parse(s.book_data),
+          control_plan_data: JSON.parse(s.control_plan_data),
+          control_plan_number: s.control_plan_number,
+          created_date: s.created_date,
+          createdby: s.created_by,
+          id: s.id,
+          is_active: s.is_active,
+          part_number: s.part_number,
+          plant: s.plant
+        }
+      });
     }
     else {
-      this.appService.post(methodConstant.PartMatrixDetail, {
+      this.isLoading = true;
+      this.appService.post(methodConstant.GetMatrixDetail, {
       }).subscribe(result => {
         if (result) {
           const resultData: any = result;
           if (resultData.status == 'Success') {
-            localStorage.setItem(LocalStorageConstant.partMatrixDetail, JSON.stringify(resultData.resultJson));
-            this.partMatrixDetail = resultData.resultJson;
-            if(this.partMatrixDetail !== null && this.partMatrixDetail.length <= 0){
-              this.isEmptyGrid = true;
-            }
-            else{
-              this.isEmptyGrid  = false;
-            }
+            localStorage.setItem(LocalStorageConstant.MatrixDetails, JSON.stringify(resultData.resultJson));
+            this.matrixDetails = resultData.resultJson;
+            this.matrixViewDataDetails = this.matrixDetails.map((s) => {
+              return {
+                book_data: JSON.parse(s.book_data),
+                control_plan_data: JSON.parse(s.control_plan_data),
+                control_plan_number: s.control_plan_number,
+                created_date: s.created_date,
+                createdby: s.created_by,
+                id: s.id,
+                is_active: s.is_active,
+                part_number: s.part_number,
+                plant: s.plant
+              }
+            });
             this.isLoading = false;
           }
           else {
             this.isLoading = false;
           }
+        }
+      });
+    }
+  }
+  addNewMatrix() {
+    this.router.navigate(['manageMatrix']);
+  }
+  editMatrix(matrix: MatrixViewEntity) {
+    if (matrix != null && matrix != undefined) {
+      const id = matrix.id;
+      this.router.navigate(['manageMatrix'], {
+        queryParams: {
+          id: id
         }
       });
     }
@@ -103,151 +157,97 @@ export class PartMatrixComponent implements OnInit {
       modal.show();
     }
   }
-  saveDetail(): void {
-    if (this.partsMatrixForm.valid) {
-      this.isLoading = true;
-      if (this.btnLabel === "Update") {
-        this.UpdateDetails();
-      }
-      else {
-        this.SaveConfirm();
-      }
-    }
-    else {
-      this.partsMatrixForm.markAllAsTouched();
-    }
-  }
-  resetForm(): void {
-    this.partsMatrixForm.reset();
-  }
-  SaveConfirm(): void {
-    if (this.validateDatatoSave()) {
-      this.appService.post(methodConstant.AddPatrsMatrix, {
-        part_number: this.partsMatrixForm.get("part_number")?.value,
-        row_number: this.partsMatrixForm.get("row_number")?.value,
-        column_number: this.partsMatrixForm.get("column_number")?.value
-      }).subscribe(result => {
-        if (result) {
-          const resultData: any = result;
-          if (resultData.status == 'Success') {
-            this.isError = false;
-            var existing_Json = JSON.parse(localStorage.getItem(LocalStorageConstant.partMatrixDetail) ?? "");
-            existing_Json = existing_Json.concat(resultData.resultJson);
-            this.partMatrixDetail = existing_Json;
-            if (existing_Json != null && existing_Json != "") {
-              localStorage.setItem(LocalStorageConstant.partMatrixDetail, JSON.stringify(existing_Json));
-            }
-            this.isLoading = false;
-          }
-          else {
-            this.Message = resultData.message;
-            this.isError = true;
-            this.isLoading = false;
-            this.partsMatrixForm.reset();
-          }
-        }
+  deleteConfirm(matrix: MatrixViewEntity){
+    this.matrixId  = matrix.id;
+     const modalElement = document.getElementById('deleteModal');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement, {
+        backdrop: 'static',
+        keyboard: false
       });
+      modal.show();
     }
-    else{ 
-      this.isLoading=false;
-    }
-  }
-  UpdateDetails(): void {
-    this.appService.post(methodConstant.UpdatePatrsMatrix, {
-      id: this.id,
-      part_number: this.partsMatrixForm.get("part_number")?.value,
-      row_number: this.partsMatrixForm.get("row_number")?.value,
-      column_number: this.partsMatrixForm.get("column_number")?.value,
-      created_date: this.created_date,
-      created_by: this.created_by,
-      is_active: 1
-    }).subscribe(result => {
-      if (result) {
-        const resultData: any = result;
-        if (resultData.status == 'Success') {
-          this.isError = false;
-          var existing_Json = JSON.parse(localStorage.getItem(LocalStorageConstant.partMatrixDetail) ?? "");
-          var index = existing_Json.findIndex((obj: { id: string; }) => obj.id === resultData.resultJson.id);
-          if (index !== -1) {
-            existing_Json[index] = resultData.resultJson;
-          }
-          this.partMatrixDetail = existing_Json;
-          localStorage.setItem(LocalStorageConstant.partMatrixDetail, JSON.stringify(existing_Json));
-          this.isLoading = false;
-        }
-        else {
-          this.Message = resultData.message;
-          this.isError = true;
-          this.isLoading = false;
-          this.partsMatrixForm.reset();
-        }
-      }
-    });
-  }
-  Delete(): void {
+  } 
+  delete(): void {
     this.isLoading = true;
-    this.appService.post(methodConstant.UpdatePatrsMatrix, {
-      id: this.id,
-      part_number: this.partsMatrixForm.get("part_number")?.value,
-      row_number: this.partsMatrixForm.get("row_number")?.value,
-      column_number: this.partsMatrixForm.get("column_number")?.value,
-      created_date: this.created_date,
-      created_by: this.created_by,
-      is_active: 0
+    this.appService.post(methodConstant.DeleteMatrix, {
+      id: this.matrixId
     }).subscribe(result => {
       if (result) {
         const resultData: any = result;
         if (resultData.status == 'Success') {
           this.isError = false;
-          var existing_Json = JSON.parse(localStorage.getItem(LocalStorageConstant.partMatrixDetail) ?? "");
+          var existing_Json = JSON.parse(localStorage.getItem(LocalStorageConstant.MatrixDetails) ?? "");
           existing_Json = existing_Json.filter((s: { id: string; }) => s.id !== resultData.resultJson.id);
-          this.partMatrixDetail = existing_Json;
-          localStorage.setItem(LocalStorageConstant.partMatrixDetail, JSON.stringify(existing_Json));
+          this.matrixDetails = existing_Json;
+          localStorage.setItem(LocalStorageConstant.MatrixDetails, JSON.stringify(existing_Json));
+          this.matrixViewDataDetails = this.matrixDetails.map((s) => {
+            return {
+              book_data: JSON.parse(s.book_data),
+              control_plan_data: JSON.parse(s.control_plan_data),
+              control_plan_number: s.control_plan_number,
+              created_date: s.created_date,
+              createdby: s.created_by,
+              id: s.id,
+              is_active: s.is_active,
+              part_number: s.part_number,
+              plant: s.plant
+            }
+          });
+          this.enableNotification_success = true;
           this.isLoading = false;
         }
         else {
           this.Message = resultData.message;
           this.isError = true;
           this.isLoading = false;
-          this.partsMatrixForm.reset();
+             this.enableNotification_success = false;
         }
       }
     });
   }
   Refresh(): void {
-    localStorage.removeItem(LocalStorageConstant.partMatrixDetail);
-    this.getPartDetails();
+    localStorage.removeItem(LocalStorageConstant.MatrixDetails);
+    this.getMatrixDetails();
   }
-  filteredParts(): PartsMatrix[] {
-    if (this.part_number_search !== '') {
-      return this.partMatrixDetail.filter(part =>
-        String(part.part_number).toLowerCase().includes(this.part_number_search.toLowerCase())
-      );
+  applyFilter() {
+    const filter_part_number = this.filterForm.get("part_number")?.value;
+    if (filter_part_number != null && filter_part_number != undefined && filter_part_number != "") {
+      this.filter_part_number = filter_part_number;
+      localStorage.setItem(LocalStorageConstant.MatrixSearch, this.filter_part_number);
     }
-    else {
-      return this.partMatrixDetail;
-    }
+    this.matrixDetails = JSON.parse(localStorage.getItem(LocalStorageConstant.MatrixDetails) ?? "").filter((s: Matrix) => (s.part_number?.toString().toLowerCase() == this.filter_part_number?.toString().toLowerCase() || this.filter_part_number == ""));
+    this.matrixViewDataDetails = this.matrixDetails.map((s) => {
+      return {
+        book_data: JSON.parse(s.book_data),
+        control_plan_data: JSON.parse(s.control_plan_data),
+        control_plan_number: s.control_plan_number,
+        created_date: s.created_date,
+        createdby: s.created_by,
+        id: s.id,
+        is_active: s.is_active,
+        part_number: s.part_number,
+        plant: s.plant
+      }
+    });
   }
-  validateDatatoSave(): boolean {
-    var isValid = false;
-    const part_number = this.partsMatrixForm.get("part_number")?.value;
-    const row_number = this.partsMatrixForm.get("row_number")?.value;
-    const column_number = this.partsMatrixForm.get("column_number")?.value;
-    if (this.partMatrixDetail.filter(s => s.part_number === part_number).length > 0) {
-      isValid =  false;
-      this.isError = true;
-      this.Message = "Sorry, Part Number already exists!";
+  removeFilter(item: string): void {
+    if (item == "partnumber") {
+      this.filter_part_number = "";
+      this.filterForm.get("part_number")?.reset();
+      localStorage.removeItem(LocalStorageConstant.MatrixSearch);
     }
-    else if(this.partMatrixDetail.filter(s => s.row_number === row_number && s.column_number === column_number).length > 0){
-      isValid =  false;
-      this.isError = true;
-      this.Message = "Sorry, Row and Column Number combination already exists!";
+    this.applyFilter();
+  }
+
+  applyFilterOptions(): void {
+    const modalElement = document.getElementById('filtermodal');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement, {
+        backdrop: 'static',
+        keyboard: false
+      });
+      modal.show();
     }
-    else{
-      this.isError = false;
-      isValid = true;
-      this.Message = "";
-    }
-    return isValid;
   }
 }

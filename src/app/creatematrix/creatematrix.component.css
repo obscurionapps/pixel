@@ -1,0 +1,18 @@
+::ng-deep .form-label{
+        text-align: left !important;
+        width: 100% !important;
+        margin-bottom: 0px;
+    }
+    ::ng-deep .ng-option{
+        text-align: left !important;
+    }
+    ::ng-deep .card-header{
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    text-align: left;
+    }
+    ::ng-deep .card{
+        border-color: #bce8f1;
+        text-align: left;
+    }
