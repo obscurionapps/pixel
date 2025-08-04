@@ -112,7 +112,6 @@ export class ReportissueComponent implements OnInit, AfterViewInit  {
   }
   onDateSelected(date: NgbDateStruct) {
     this.formattedDate = `${String(date.day).padStart(2, '0')}/${String(date.month).padStart(2, '0')}/${date.year}`;
-    this.formattedDate.replaceAll('/','$');
   }
 
   loadIssueDetail():void

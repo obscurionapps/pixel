@@ -58,7 +58,7 @@
                                     }}</button></td>
                             <td>{{ issue.date }}</td>
                             <td class="status"><span
-                                    [ngClass]="issue.issue_type == 'Customer' ? 'danger' : issue.issue_type == 'Improvement' ? 'active' : 'medium'">{{issue.issue_type
+                                    [ngClass]="issue.issue_type == 'Customer' ? 'danger' : issue.issue_type == 'Improvement' ? 'active' : 'medium'">{{issue.issue_type == '' ? 'NA' : issue.issue_type
                                     }}</span> </td>
                             <td class="d-none d-md-table-cell">{{ issue.control_plan_no }}</td>
                             <td class="d-none d-md-table-cell">{{ issue.drawing_number }}</td>
