@@ -15,7 +15,8 @@ export const methodConstant = {
   getAccountRequest:'getAccountRequest',
   updateAccountRequest:'updateAccountReq',
   GetMatrixDetail:'getMatrixDetail',
-  DeleteMatrix:'deleteMatrix'
+  DeleteMatrix:'deleteMatrix',
+  DeleteReportedIssue:'deleteIssue'
 };
 
 export const LocalStorageConstant = {

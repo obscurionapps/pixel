@@ -8,18 +8,20 @@
             <button class="btn btn-link nav-link" (click)="homepage()">Dashboard</button>
           </li>
           <li class="nav-item">
-            <button class="btn btn-link nav-link" (click)="openPartsSearch()">Part Matrix Search <span class="sr-only"></span></button>
+            <button class="btn btn-link nav-link" *ngIf="isAdmin" (click)="reportIssue()">Report an issue <span class="sr-only"></span></button>
           </li>
           <li class="nav-item">
-            <button class="btn btn-link nav-link" (click)="SpecificationSetup(); toggleOffCanvas()">Part Specifications <span class="sr-only"></span></button>
+            <button class="btn btn-link nav-link" (click)="viewReportIssue()">Defect Records<span class="sr-only"></span></button>
           </li>
-          <li class="nav-item dropdown" *ngIf="isAdmin">
-            <button class="btn btn-link nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Configurations</button>
-            <div class="dropdown-menu">
-              <button class="btn btn-link dropdown-item" (click)="SpecificationSetup(); toggleOffCanvas()">Part Setup</button>
-              <button class="btn btn-link dropdown-item" (click)="partMatrixSetup(); toggleOffCanvas()">Part Matrix Setup</button>
-            </div>
+          <li class="nav-item">
+            <button class="btn btn-link nav-link" *ngIf="isAdmin" (click)="creatematrix()">Configure Matrix <span class="sr-only"></span></button>
           </li>
+          <li class="nav-item">
+            <button class="btn btn-link nav-link"  *ngIf="isAdmin"  (click)="accountRequests()">Account Requests <span class="sr-only"></span></button>
+          </li> 
+            <li class="nav-item">
+            <button class="btn btn-link nav-link"   (click)="creatematrix()">Parts Search <span class="sr-only"></span></button>
+          </li> 
           <li class="nav-item dropdown">
             <button class="btn btn-link nav-link" (click)="logout(); toggleOffCanvas()">Logout</button>
           </li>

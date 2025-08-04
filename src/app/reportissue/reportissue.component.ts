@@ -19,11 +19,13 @@ import { ReportedIssues } from '../models/reportedIssue';
 import { NotificationComponent } from '../notification/notification.component';
 import { LightboxModule } from 'ngx-lightbox';
 import { Lightbox } from 'ngx-lightbox';
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
+import { BreadCrumb } from '../models/Custom';
 @Component({
   selector: 'app-reportissue',
   standalone: true,
   providers: [CommonUtilities],
-  imports: [LightboxModule, ReactiveFormsModule, NgxPaginationModule, NgSelectModule, AlertsComponent, LoaderComponent, FormsModule, HeaderComponent, CommonModule, NgbModule, NotificationComponent],
+  imports: [BreadcrumbComponent, LightboxModule, ReactiveFormsModule, NgxPaginationModule, NgSelectModule, AlertsComponent, LoaderComponent, FormsModule, HeaderComponent, CommonModule, NgbModule, NotificationComponent],
   templateUrl: './reportissue.component.html',
   styleUrl: './reportissue.component.css'
 })
@@ -31,6 +33,9 @@ export class ReportissueComponent implements OnInit, AfterViewInit  {
   constructor(private _lightbox: Lightbox, private commonUtilities: CommonUtilities, private appService: ScriptService, private router: Router, private route: ActivatedRoute) { }
   @ViewChild('closeBtnSpecModal') closeModalBtn!: ElementRef;
   @ViewChild('part_number') partNumberInput!: ElementRef<HTMLInputElement>;
+  breadcrumb_data:BreadCrumb[]=[{"title":"Dashboard", "route":"/home", "active":false}, {"title":"Reported issues", "route":"/reportissue_grid", "active":false},
+    {"title":"Report an issue", "route":"","active":true}
+  ];
   ngAfterViewInit(): void {
     this.partNumberInput.nativeElement.focus();
   }

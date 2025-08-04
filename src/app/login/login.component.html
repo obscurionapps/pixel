@@ -1,8 +1,6 @@
 <form [formGroup]="loginForm" class="form-signin">
   <img class="mb-4" src="https://staph.blob.core.windows.net/images-layout/logo.svg" alt="" width="150">
   <app-alerts [errorAlert]="isError" [Message]="Message"></app-alerts>
-   <div class="col-12" *ngIf="(loginForm.get('username')?.invalid && loginForm.get('username')?.touched) || 
-  (loginForm.get('password')?.invalid && loginForm.get('password')?.touched)"><span style="color: rgb(221, 7, 7); font-size: small;">* Username, Password is required</span></div>
   <label for="inputEmail" class="sr-only">Email address</label>
   <input
     type="text"

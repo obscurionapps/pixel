@@ -16,16 +16,21 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BookMatrix, ControlPlanMatrix, Matrix } from '../models/Custom';
 import { NotificationComponent } from '../notification/notification.component';
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
+import { BreadCrumb } from '../models/Custom';
 @Component({
   selector: 'app-creatematrix',
   standalone: true,
   providers:[CommonUtilities],
-  imports: [NotificationComponent, ReactiveFormsModule, NgSelectModule, FormsModule, HeaderComponent, CommonModule, NgxPaginationModule, LoaderComponent, AlertsComponent, AppComponent],
+  imports: [BreadcrumbComponent, NotificationComponent, ReactiveFormsModule, NgSelectModule, FormsModule, HeaderComponent, CommonModule, NgxPaginationModule, LoaderComponent, AlertsComponent, AppComponent],
   templateUrl: './creatematrix.component.html',
   styleUrl: './creatematrix.component.css'
 })
 export class CreatematrixComponent implements OnInit {
   constructor(private appService: ScriptService, private commonUtilities:CommonUtilities, private router:Router, private route: ActivatedRoute) { }
+    breadcrumb_data:BreadCrumb[]=[{"title":"Dashboard", "route":"/home", "active":false}, {"title":"Part matrix list", "route":"/partmaxtrix", "active":false}
+      ,{"title":"Part matrix management", "route":"/manageMatrix", "active":true}
+    ];
   matrixForm!:FormGroup;
   isLoading = false;
   plants = [ {"name":"--Select Plant--", "value":""},{"name":"P1", "value":"P1"},{"name" : "P2", "value" : "P2"}];
@@ -74,7 +79,6 @@ export class CreatematrixComponent implements OnInit {
   }
   loadSelectedMatrix():void{
     const matrixData = localStorage.getItem(LocalStorageConstant.MatrixDetails);
-    debugger;
     if(matrixData != null && matrixData != undefined && matrixData != ""){
       const matrix_josn = JSON.parse(matrixData);
       this.selectedMatrix = matrix_josn.filter((s:Matrix)=>s.id == this.matrixId)[0];

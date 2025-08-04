@@ -14,18 +14,20 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NotificationComponent } from '../notification/notification.component';
 import { AccountRequest } from '../models/Custom';
-
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
+import { BreadCrumb } from '../models/Custom';
 @Component({
   selector: 'app-viewaccountrequest',
   standalone: true,
   providers: [CommonUtilities],
-  imports: [ReactiveFormsModule, NgxPaginationModule, NgSelectModule, AlertsComponent, LoaderComponent, FormsModule, HeaderComponent, CommonModule, NotificationComponent],
+  imports: [BreadcrumbComponent, ReactiveFormsModule, NgxPaginationModule, NgSelectModule, AlertsComponent, LoaderComponent, FormsModule, HeaderComponent, CommonModule, NotificationComponent],
   templateUrl: './viewaccountrequest.component.html',
   styleUrl: './viewaccountrequest.component.css'
 })
 export class ViewaccountrequestComponent implements OnInit {
   @ViewChild('closeRequest') closeModalBtn!: ElementRef;
   constructor(private commonUtilities: CommonUtilities, private appService: ScriptService, private router: Router, private route: ActivatedRoute) { }
+  breadcrumb_data:BreadCrumb[]=[{"title":"Dashboard", "route":"/home", "active":false}, {"title":"Account requests", "route":"/viewrequest", "active":true}];
   accountRequests: AccountRequest[] = [];
   isLoading = false;
   isSuccess = false;
@@ -65,7 +67,6 @@ export class ViewaccountrequestComponent implements OnInit {
         if (result) {
           const resultData: any = result;
           if (resultData.status == 'Success') {
-            console.log(resultData);
             this.accountRequests = resultData.resultJson;
             localStorage.setItem(LocalStorageConstant.AccountRequests, JSON.stringify(this.accountRequests));
             this.isLoading = false;

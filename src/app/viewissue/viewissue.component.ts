@@ -16,12 +16,14 @@ import { FormGroup, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { ReportedIssues } from '../models/reportedIssue';
 import { NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationComponent } from '../notification/notification.component';
+import { BreadCrumb } from '../models/Custom';
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-viewissue',
   standalone: true,
   providers: [CommonUtilities],
-  imports: [ReactiveFormsModule, NgxPaginationModule, NgSelectModule, AlertsComponent, LoaderComponent, FormsModule, HeaderComponent, CommonModule, NgbModule, NotificationComponent],
+  imports: [BreadcrumbComponent, ReactiveFormsModule, NgxPaginationModule, NgSelectModule, AlertsComponent, LoaderComponent, FormsModule, HeaderComponent, CommonModule, NgbModule, NotificationComponent],
   templateUrl: './viewissue.component.html',
   styleUrl: './viewissue.component.css'
 })
@@ -45,6 +47,8 @@ constructor(private commonUtilities: CommonUtilities, private appService: Script
   userRole="";
   enableNotification_success=false;
   enableNotification_failure=false;
+  breadcrumb_data:BreadCrumb[]=[{"title":"Dashboard", "route":"/home", "active":false}, {"title":"Defect records", "route":"/viewissue", "active":true}
+    ];
   ngOnInit(): void {
     if (!this.commonUtilities.isAccessEnabled)
       this.router.navigate(['login']);

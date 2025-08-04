@@ -1,4 +1,5 @@
 <app-header></app-header>
+<app-breadcrumb [breadcrumb_data]="breadcrumb_data"></app-breadcrumb>
 <app-loader [loading]="isLoading"></app-loader>
 <app-notification [successNotificationEnabled]="enableNotification_success"></app-notification>
 <app-notification [failureNotificationEnabled]="enableNotification_failure"></app-notification>
@@ -38,19 +39,24 @@
         <div class="col-md-12">
             <app-alerts [errorAlert]="filterDateError" [Message]="Message"></app-alerts>
             <div class="table-wrap">
-                <table class="table">
+                <div class="table-responsive custom-scroll">
+                <table class="table issue_detail">
                     <thead>
                         <tr>
                             <th>part no.</th>
                             <th>Issue date</th>
                             <th>type</th>
-                            <th class="d-none d-md-table-cell">control plan no.</th>
-                            <th class="d-none d-md-table-cell">drawing no.</th>
-                            <th class="d-none d-md-table-cell" width="300">problem</th>
-                            <th class="d-none d-md-table-cell">defect image</th>
+                            <th>control plan no.</th>
+                            <th>drawing no.</th>
+                            <th width="300">problem</th>
+                            <th>defect image</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <tr *ngIf="reportedIssues.length === 0">
+                            <td colspan="7" class="text-center text-muted">No records found.</td>
+                        </tr>
                         <tr class="alert"
                             *ngFor="let issue of this.reportedIssues | paginate: { itemsPerPage: 10, currentPage: p }">
                             <td><button type="button" (click) = "editIssue(issue.id)" class="btn btn-link">{{ issue.part_number
@@ -60,14 +66,16 @@
                                     [ngClass]="issue.issue_type == 'Customer' ? 'danger' : issue.issue_type == 'Improvement' ? 'active' : 'medium'">{{issue.issue_type == ''
                                     ?'NA' : issue.issue_type
                                     }}</span> </td>
-                            <td class="d-none d-md-table-cell">{{ issue.control_plan_no }}</td>
-                            <td class="d-none d-md-table-cell">{{ issue.drawing_number }}</td>
-                            <td class="d-none d-md-table-cell">{{ issue.problem }}</td>
-                            <td class="d-none d-md-table-cell"><button class="btn btn-link">View</button></td>
+                            <td>{{ issue.control_plan_no }}</td>
+                            <td>{{ issue.drawing_number }}</td>
+                            <td>{{ issue.problem }}</td>
+                            <td><button class="btn btn-link">View</button></td>
+                            <td><button (click)="deleteissue(issue.id)" class="btn btn-link" style="color: red;">Delete</button></td>
                         </tr>
                     </tbody>
-                </table>
-                <div class="paginator">
+                </table>  
+                 </div>
+                   <div class="paginator">
                     <pagination-controls (pageChange)="p = $event"></pagination-controls>
                 </div>
             </div>
@@ -95,6 +103,23 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-primary custom-btn" data-dismiss="modal"
                     (click)="applyFilter()">Apply</button>
+                <button type="button" class="btn btn-outline-secondary custom-btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+               <h6 class="modal-title" id="deleteModalLabel"> <i class="fa fa-exclamation-triangle font-danger mr-2"></i>Confirm Deletion</h6>
+            </div>
+            <div class="modal-body">
+                <label>Are you sure you want to permanently delete this item?</label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger custom-btn" data-dismiss="modal"
+                    (click)="delete()">Delete</button>
                 <button type="button" class="btn btn-outline-secondary custom-btn" data-dismiss="modal">Close</button>
             </div>
         </div>

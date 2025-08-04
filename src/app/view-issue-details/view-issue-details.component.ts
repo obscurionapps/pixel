@@ -6,18 +6,22 @@ import { ReportedIssues } from '../models/reportedIssue';
 import { LocalStorageConstant } from '../common/constants';
 import { HeaderComponent } from '../header/header.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { CommonModule } from '@angular/common';
-import { partSpecification } from '../models/PartSpecDetail';
+import { CommonModule } from '@angular/common'; 
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
+import { BreadCrumb } from '../models/Custom';
 @Component({
   selector: 'app-view-issue-details',
   standalone: true,
   providers: [CommonUtilities],
-  imports: [HeaderComponent, NgxPaginationModule, CommonModule],
+  imports: [BreadcrumbComponent, HeaderComponent, NgxPaginationModule, CommonModule],
   templateUrl: './view-issue-details.component.html',
   styleUrl: './view-issue-details.component.css'
 })
 export class ViewIssueDetailsComponent implements OnInit {
   constructor(private commonUtility: CommonUtilities, private router: Router, private route: ActivatedRoute) { }
+  breadcrumb_data:BreadCrumb[]=[{"title":"Dashboard", "route":"/home", "active":false}, {"title":"Defect records", "route":"/viewissue", "active":false},
+    {"title":"Defect record detail", "route":"/issue_details", "active":true}
+  ];
   selectedPartCommonDetail: CommonPartDetail = {
     control_plan_no: '',
     drawing_number: '',

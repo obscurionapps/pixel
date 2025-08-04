@@ -6,7 +6,6 @@ import { HeaderComponent } from '../header/header.component';
 import { FormsModule } from '@angular/forms';
 import { CommonUtilities } from '../common/CommonUtilities';
 import { Messages } from '../common/constants';
-import { PartSpecDetail, specification, SpecJSON } from '../models/PartSpecDetail';
 import { ScriptService } from '../service/appscript.service';
 import { LocalStorageConstant, methodConstant } from '../common/constants';
 import { LoaderComponent } from '../loader/loader.component';
@@ -17,17 +16,19 @@ import { FormGroup, ReactiveFormsModule, Validators, FormControl } from '@angula
 import { ReportedIssues } from '../models/reportedIssue';
 import { NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationComponent } from '../notification/notification.component';
-
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
+import { BreadCrumb } from '../models/Custom';
 @Component({
   selector: 'app-reportissues-grid',
   standalone: true,
   providers: [CommonUtilities],
-  imports: [ReactiveFormsModule, NgxPaginationModule, NgSelectModule, AlertsComponent, LoaderComponent, FormsModule, HeaderComponent, CommonModule, NgbModule, NotificationComponent],
+  imports: [BreadcrumbComponent, ReactiveFormsModule, NgxPaginationModule, NgSelectModule, AlertsComponent, LoaderComponent, FormsModule, HeaderComponent, CommonModule, NgbModule, NotificationComponent],
   templateUrl: './reportissues-grid.component.html',
   styleUrl: './reportissues-grid.component.css'
 })
 export class ReportissuesGridComponent implements OnInit {
   constructor(private commonUtilities: CommonUtilities, private appService: ScriptService, private router: Router, private route: ActivatedRoute) { }
+  breadcrumb_data:BreadCrumb[]=[{"title":"Dashboard", "route":"/home", "active":false}, {"title":"Reported issues", "route":"/reportissue_grid", "active":true}];
   isLoading = false;
   reportedIssues: ReportedIssues[] = [];
   isEmptyGrid = false;
@@ -45,6 +46,7 @@ export class ReportissuesGridComponent implements OnInit {
   userRole="";
   enableNotification_success=false;
   enableNotification_failure=false;
+  id_todelete ="";
   ngOnInit(): void {
     if (!this.commonUtilities.isAccessEnabled)
       this.router.navigate(['login']);
@@ -186,5 +188,42 @@ export class ReportissuesGridComponent implements OnInit {
         }
       });
     }
+  }
+  deleteissue(issue_id:string):void{
+    if(issue_id != null){
+      this.id_todelete = issue_id;
+       const modalElement = document.getElementById('deleteModal');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement, {
+        backdrop: 'static',
+        keyboard: false
+      });
+      modal.show();
+    }
+    }
+  }
+  delete():void{
+     this.isLoading = true;
+    this.appService.post(methodConstant.DeleteReportedIssue, {
+      id: this.id_todelete
+    }).subscribe(result => {
+      if (result) {
+        const resultData: any = result;
+        if (resultData.status == 'Success') {
+          var existing_Json = JSON.parse(localStorage.getItem(LocalStorageConstant.reportedIssues) ?? "");
+          existing_Json = existing_Json.filter((s: { id: string; }) => s.id !== resultData.resultJson.id);
+          this.reportedIssues = existing_Json;
+          localStorage.setItem(LocalStorageConstant.reportedIssues, JSON.stringify(existing_Json));
+          this.applyFilter();
+          this.enableNotification_success = true;
+          this.isLoading = false;
+        }
+        else {
+          this.Message = resultData.message;
+          this.isLoading = false;
+             this.enableNotification_success = false;
+        }
+      }
+    });
   }
 }

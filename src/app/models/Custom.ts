@@ -131,3 +131,14 @@ export class MatrixViewEntity{
         this.createdby=''
     }
 }
+export class BreadCrumb{
+    title:string;
+    route:string;
+    active:boolean;
+    constructor()
+    {
+        this.title='';
+        this.route='';
+        this.active=false;
+    }
+}

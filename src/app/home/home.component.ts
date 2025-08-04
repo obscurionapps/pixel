@@ -6,11 +6,13 @@ import { CommonUtilities } from '../common/CommonUtilities';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { BreadCrumb } from '../models/Custom';
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 @Component({
   selector: 'app-home',
   standalone: true,
   providers:[CommonUtilities],
-  imports: [HeaderComponent, FormsModule, CommonModule,RouterModule],
+  imports: [HeaderComponent, FormsModule, CommonModule,RouterModule,BreadcrumbComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -27,6 +29,7 @@ export class HomeComponent implements OnInit {
     { title: 'Defect Records', icon: '🔒', route: '/viewissue', description: '',  has_access:'all' },
     { title: 'Requests', icon: '🔒', route: '/viewrequest', description: '',  has_access:'all' },
   ];
+  breadCrumb_Data:BreadCrumb[]=[{ title: 'Dashboard', route:'home', active:true }];
   loginname:string = "";
   userRole:string="";
   ngOnInit(): void {

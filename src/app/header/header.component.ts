@@ -31,21 +31,28 @@ export class HeaderComponent implements OnInit {
         this.isAdmin = false;
       }
     }
-  }
-  partMatrixSetup():void{
-    this.router.navigate(['partmaxtrix']);
-  }
+  } 
   logout():void{
     localStorage.clear();
     this.router.navigate(['login']);
-  }
-  openPartsSearch():void{
-    this.router.navigate(['matrixsearch']);
-  }
-  SpecificationSetup():void{
-    this.router.navigate(['specdetail']);
-  }
+  } 
   homepage():void{
     this.router.navigate(['home']);
+  }
+    reportIssue():void{
+    localStorage.removeItem(LocalStorageConstant.reportedIssues);
+    this.router.navigate(['reportissue_grid']);
+  }
+    viewReportIssue():void{
+    localStorage.removeItem(LocalStorageConstant.reportedIssuesUser);
+    this.router.navigate(['viewissue']);  
+  }
+   creatematrix():void{
+    localStorage.removeItem(LocalStorageConstant.MatrixDetails);
+    this.router.navigate(['partmaxtrix']);
+  }
+    accountRequests():void{
+    localStorage.removeItem(LocalStorageConstant.AccountRequests);
+    this.router.navigate(['viewrequest']);
   }
 }

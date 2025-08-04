@@ -15,16 +15,20 @@ import { CommonUtilities } from '../common/CommonUtilities';
 import { Router } from '@angular/router';
 import { Matrix, MatrixViewEntity } from '../models/Custom';
 import { NotificationComponent } from '../notification/notification.component';
+import { BreadCrumb } from '../models/Custom';
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 @Component({
   selector: 'app-part-matrix',
   standalone: true,
   providers: [CommonUtilities],
-  imports: [NotificationComponent, ReactiveFormsModule, FormsModule, HeaderComponent, CommonModule, NgxPaginationModule, LoaderComponent, AlertsComponent, AppComponent],
+  imports: [BreadcrumbComponent, NotificationComponent, ReactiveFormsModule, FormsModule, HeaderComponent, CommonModule, NgxPaginationModule, LoaderComponent, AlertsComponent, AppComponent],
   templateUrl: './part-matrix.component.html',
   styleUrl: './part-matrix.component.css'
 })
 export class PartMatrixComponent implements OnInit {
   constructor(private appService: ScriptService, private commonUtilities: CommonUtilities, private router: Router) { }
+  breadcrumb_data:BreadCrumb[]=[{"title":"Dashboard", "route":"/home", "active":false}, {"title":"Part matrix list", "route":"/partmaxtrix", "active":true}
+    ];
   p: number = 1;
   partMatrixDetail: PartsMatrix[] = [];
   isLoading = false;

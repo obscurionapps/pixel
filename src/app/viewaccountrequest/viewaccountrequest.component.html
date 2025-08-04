@@ -1,4 +1,5 @@
 <app-header></app-header>
+<app-breadcrumb [breadcrumb_data]="breadcrumb_data"></app-breadcrumb>
 <app-loader [loading]="isLoading"></app-loader>
 <div class="m20">
      <app-alerts [successAlert]="isSuccess" [Message]="Message"></app-alerts>
@@ -22,6 +23,9 @@
                             </tr>
                         </thead>
                         <tbody>
+                             <tr *ngIf="accountRequests.length === 0">
+                            <td colspan="4" class="text-center text-muted">No records found.</td>
+                        </tr>
                             <tr class="alert"
                                 *ngFor="let req of this.accountRequests | paginate: { itemsPerPage: 10, currentPage: p }">
                                 <td><button class="btn btn-link" (click)="addUser(req)"> <i
